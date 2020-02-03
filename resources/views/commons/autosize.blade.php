@@ -1,0 +1,3 @@
+<script>
+    $('#autosize').autoresize();
+</script>

@@ -14,3 +14,5 @@
 Route::get('/', function () {
     return view('home');
 });
+
+Route::resource('projects', 'ProjectController')->except('show');
