@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use Illuminate\Http\Request;
+use App\Http\Requests\ClientValidator;
 
 class ClientController extends Controller
 {
@@ -81,5 +82,24 @@ class ClientController extends Controller
     public function destroy(Client $client)
     {
         //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function fastStore(Request $request)
+    {
+        try {
+            $client = Client::firstOrCreate([
+                'name' => $request->name,
+                'address' => $request->address
+            ]);
+        } catch (\Exception $e) {
+            // TODO with errors
+        }
+        return \Response::json($client);
     }
 }

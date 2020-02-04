@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::resource('projects', 'ProjectController')->except('show');
+Route::post('/clients/fast-store', 'ClientController@fastStore')->name('clients.fastStore');

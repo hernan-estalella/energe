@@ -20,6 +20,7 @@
             </form>
         </div>
     </div>
+    @include('projects.modals.new-client')
 @endsection
 @section('custom_scripts')
     @include('datetimepicker.script')
