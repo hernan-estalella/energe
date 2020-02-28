@@ -12,6 +12,6 @@ class Panel extends Model
 
     public function projects()
     {
-        $this->hasMany('App\Project');
+        return $this->hasMany('App\Project');
     }
 }

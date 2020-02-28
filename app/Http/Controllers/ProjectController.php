@@ -4,18 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use App\Client;
+use App\Assessor;
+use App\Constant;
+use App\Inverter;
 use App\Panel;
+use App\Zone;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
     private $path = 'projects';
-    private $clients, $panels;
+    private $clients, $assessors, $constants, $inverters, $panels, $zones;
 
     public function __construct()
     {
         $this->clients = Client::all();
-        $this->panles = Panel::all();
+        $this->assessors = Assessor::all();
+        $this->constants = Constant::all();
+        $this->inverters = Inverter::all();
+        $this->panels = Panel::all();
+        $this->zones = Zone::all();
     }
     /**
      * Display a listing of the resource.
@@ -36,7 +44,11 @@ class ProjectController extends Controller
     {
         return view($this->path.'.create')
                 ->with('clients', $this->clients)
-                ->with('panels', $this->panels);
+                ->with('assessors', $this->assessors)
+                ->with('constants', $this->constants)
+                ->with('inverters', $this->inverters)
+                ->with('panels', $this->panels)
+                ->with('zones', $this->zones);
     }
 
     /**

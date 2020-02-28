@@ -3,9 +3,11 @@
     @include('datetimepicker.style')
     @include('bootstrap-select.style')
     @include('bootstrap-toggle.style')
+    @include('chartsjs.style')
+    @include('datatables.style')
 @endsection
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <h3>Crear nuevo proyecto</h3>
         {{-- <a href="{{ route('members.index') }}" class="btn btn-secondary">{{__('Cancel and return')}}</a> --}}
         <hr>
@@ -27,8 +29,15 @@
     @include('bootstrap-select.script')
     @include('autonumeric.js')
     @include('bootstrap-toggle.script')
-    {{-- @include('commons.autosize') --}}
+    @include('chartsjs.script')
+    @include('datatables.script')
     @include('projects.js')
+    @include('projects.constants-js')
+    @include('projects.project-js')
+    @include('projects.invoices-js')
+    @include('projects.proposals-js')
+    @include('projects.recovery-js')
+    @include('projects.cashflow-js')
 <script type="text/javascript">
     $(function () {
         $('#form').submit(function(){

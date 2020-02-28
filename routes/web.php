@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 Route::resource('projects', 'ProjectController')->except('show');
 Route::post('/clients/fast-store', 'ClientController@fastStore')->name('clients.fastStore');
+Route::get('/zones/ajax-get-radiations', 'ZoneController@ajaxGetRadiations')->name('zones.ajaxGetRadiations');
