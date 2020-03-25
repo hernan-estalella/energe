@@ -1,4 +1,11 @@
 <script>
+    potency = new AutoNumeric("#potency", integer);
+    investment = new AutoNumeric("#investment", integer);
+    fiscal_bonus = new AutoNumeric("#fiscal_bonus", integer);
+    inflation_1 = new AutoNumeric("#inflation_1", decimal);
+    inflation_8 = new AutoNumeric("#inflation_8", decimal);
+    inflation_rest = new AutoNumeric("#inflation_rest", decimal);
+
     var radiationItems = [];
 
     for (let month = 1; month <= 12; month++) {
@@ -155,5 +162,57 @@
         radiationTable.ajax.reload();
         radiationTable.columns.adjust().draw();
         compareChart.update();
+        calculateCashflow();
+    }
+
+    function calculateGeneration(month) {
+        var element = radiationItems[month - 1];
+        element.generation = element.radiation * potency.getNumber() * 31 * 0.85 / 1000;
+        generations[month - 1].set(element.generation);
+        dataGenerations[month - 1] = generations[month - 1].getNumber();
+        element.solar_fraction = (element.consumption > 0 ? element.generation / element.consumption * 100 : 0);
+        element.energy_sold = (element.generation > element.consumption ? element.generation - element.consumption : 0);
+        element.energy_buyed = (element.generation > element.consumption ? 0 : element.consumption - element.generation);
+        radiationTable.ajax.reload();
+        radiationTable.columns.adjust().draw();
+        compareChart.update();
+        calculateCashflow();
+    }
+
+    function potencyUpdated() {
+        for (let month = 1; month <= 12; month++) {
+            calculateGeneration(month);
+        }
+    }
+
+    function fiscalBonusUpdated() {
+        cashflowItems[7][1] = fiscal_bonus.getNumber() * exchange_rate.getNumber();
+        cashflowTable.ajax.reload();
+        cashflowTable.columns.adjust().draw();
+    }
+
+    function investmentUpdated() {        
+        cashflowItems[7][0] = investment.getNumber() * exchange_rate.getNumber();
+        cashflowTable.ajax.reload();
+        cashflowTable.columns.adjust().draw();
+    }
+
+    function someInflationUpdated() {
+        var kc = kwh_cost.getNumber();
+        for (let index = 1; index <= 25; index++) {
+            if (index == 2) {
+                kc += kc * inflation_1.getNumber() / 100;
+            } else if (index > 2 && index <= 8) {
+                kc += kc * inflation_8.getNumber() / 100;
+            } else if (index > 8) {
+                kc += kc * inflation_rest.getNumber() / 100;
+            }
+            
+            cashflowItems[0][index] = kc;
+            cashflowItems[2][index] = cashflowItems[0][index] * cashflowItems[1][index];
+            cashflowItems[3][index] = kc * 0.6;
+        }
+        cashflowTable.ajax.reload();
+        cashflowTable.columns.adjust().draw();
     }
 </script>

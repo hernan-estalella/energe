@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Assessor;
 
 class AssessorSeeder extends Seeder
 {
@@ -11,6 +12,6 @@ class AssessorSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory(Assessor::class, 2)->create();
     }
 }

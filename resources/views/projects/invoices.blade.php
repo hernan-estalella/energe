@@ -43,7 +43,7 @@
                 @endswitch
             </label>
             <div class="input-group input-group-sm mb-3">
-            <input class="form-control" type="text" name="consumption_{{$i}}" id="consumption_{{$i}}" onblur="calculateRadiation({{$i}});">
+            <input class="form-control right" type="text" name="consumption_{{$i}}" id="consumption_{{$i}}" onblur="invoiceConsumptionUpdated({{$i}}); ">
                 <div class="input-group-append">
                     <span class="input-group-text">kWh</span>
                 </div>
@@ -52,11 +52,11 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input class="form-control" type="text" name="value_{{$i}}" id="value_{{$i}}">
+                <input class="form-control right" type="text" name="value_{{$i}}" id="value_{{$i}}" onblur="invoiceValueUpdated({{$i}}); ">
             </div> 
             <small>kWh generados</small>
             <div class="input-group input-group-sm mb-3">
-                <input class="form-control" type="text" name="generation_{{$i}}" id="generation_{{$i}}" readonly>
+                <input class="form-control right" type="text" name="generation_{{$i}}" id="generation_{{$i}}" readonly>
                 <div class="input-group-append">
                     <span class="input-group-text">kWh</span>
                 </div>
@@ -69,7 +69,7 @@
         <div class="form-group col-1">
             <small>Consumo anual</small>
             <div class="input-group input-group-sm mb-3">
-                <input class="form-control" type="text" name="" id="" readonly>
+                <input class="form-control right" type="text" id="annual_consumption" readonly>
                 <div class="input-group-append">
                     <span class="input-group-text">kW</span>
                 </div>
@@ -81,7 +81,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input class="form-control" type="text" name="" id="" readonly>
+                <input class="form-control right" type="text" id="average_consumption" readonly>
             </div>
         </div>
         <div class="form-group col-1">
@@ -90,13 +90,13 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                 </div>
-                <input class="form-control" type="text" name="" id="">
+                <input class="form-control right" type="text" id="kwh_cost" onblur="kwhCostUpdated();">
             </div>
         </div>
         <div class="form-group col-1">
             <small>Pot. contratada</small>
             <div class="input-group input-group-sm mb-3">
-                <input class="form-control" type="text" name="" id="" readonly>
+                <input class="form-control right" type="text" id="hired_potency">
                 <div class="input-group-append">
                     <span class="input-group-text">kW</span>
                 </div>
@@ -105,7 +105,7 @@
         <div class="form-group col-1">
             <small>kg actual CO<sub>2</sub></small>
             <div class="input-group input-group-sm mb-3">
-                <input class="form-control" type="text" name="" id="" readonly>
+                <input class="form-control right" type="text" id="actual_kg_co2" readonly>
                 <div class="input-group-append">
                     <span class="input-group-text">kg</span>
                 </div>

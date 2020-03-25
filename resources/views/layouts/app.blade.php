@@ -92,6 +92,11 @@
     <!--@include('layouts.footer')-->
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script>
+        var __integerFormatter = new Intl.NumberFormat('es', { style: 'currency', currency: 'EUR' });
+        var __decimalFormatter = new Intl.NumberFormat("es", {minimumFractionDigits: 2});
+        var __currencyFormatter = new Intl.NumberFormat("es", {style: "currency", currency: 'ARS'});
+    </script>
     @include('layouts.notification')
     @yield('custom_scripts')
 </body>

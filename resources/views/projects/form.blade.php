@@ -24,7 +24,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#cashflow" role="tab" aria-controls="cashflow"
-                            aria-selected="false">Flujo de fondos</a>
+                            aria-selected="false" data-toggle="tab">Flujo de fondos</a>
                     </li>
                 </ul>
             </div>

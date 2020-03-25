@@ -98,8 +98,10 @@ class ClientController extends Controller
                 'address' => $request->address
             ]);
         } catch (\Exception $e) {
-            // TODO with errors
+            session()->put('warning',__('An error has occured'));
+            session()->put('exception', $e->getMessage());
+        } finally {            
+            return \Response::json($client);
         }
-        return \Response::json($client);
     }
 }

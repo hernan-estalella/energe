@@ -37056,6 +37056,20 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 $('[data-toggle="tooltip"]').tooltip();
 
+var __integerFormatter = new Intl.NumberFormat('es', {
+  style: 'currency',
+  currency: 'EUR'
+});
+
+var __decimalFormatter = new Intl.NumberFormat("es", {
+  minimumFractionDigits: 2
+});
+
+var __currencyFormatter = new Intl.NumberFormat("es", {
+  style: "currency",
+  currency: 'ARS'
+});
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

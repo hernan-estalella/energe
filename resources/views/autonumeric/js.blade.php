@@ -19,7 +19,17 @@ var decimal = {
                 emptyInputBehavior: "zero",
                 modifyValueOnWheel: false,
                 unformatOnSubmit: true
-            }
+            };
+var decimal_3 = {
+                caretPositionOnFocus: "start",
+                decimalCharacter: ",",
+                decimalPlaces: 3,
+                decimalCharacterAlternative: ".",
+                digitGroupSeparator: ".",
+                emptyInputBehavior: "zero",
+                modifyValueOnWheel: false,
+                unformatOnSubmit: true
+            };
 
 var integer = {
                 caretPositionOnFocus: "start",
@@ -29,7 +39,7 @@ var integer = {
                 emptyInputBehavior: "zero",
                 modifyValueOnWheel: false,
                 unformatOnSubmit: true
-            }
+            };
 
 var percentage = {
                 caretPositionOnFocus: "start",
@@ -42,5 +52,5 @@ var percentage = {
                 modifyValueOnWheel: false,
                 symbolWhenUnfocused: "%",
                 unformatOnSubmit: true
-            }
+            };
 </script>

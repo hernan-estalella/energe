@@ -5,6 +5,16 @@
     @include('bootstrap-toggle.style')
     @include('chartsjs.style')
     @include('datatables.style')
+    <style>
+        .right {
+            text-align: right;
+        }
+        
+        .dataTables_scrollHeadInner {
+            margin: 0 auto;
+            width: 100% !important;
+        }
+    </style>
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -16,8 +26,11 @@
             <form method="post" action="{{route('projects.store')}}" id="form">
                 @include('projects.form')
                 <div class="clearfix"></div>
-                <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <button id="save-btn" type="submit" class="btn btn-success">Guardar</button>
+                <hr>
+                <div class="row justify-content-center">
+                    <div class="form-group col-xs-6 col-sm-6 col-md-2 col-lg-2">
+                        <button id="save-btn" type="button" class="btn btn-success btn-block btn-lg" onclick="save();">Guardar</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -39,10 +52,8 @@
     @include('projects.recovery-js')
     @include('projects.cashflow-js')
 <script type="text/javascript">
-    $(function () {
-        $('#form').submit(function(){
-            $("#save-btn").html("Guardando...").attr("disabled", true);
-        });
-    });        
+    function save() {
+        $("#save-btn").html("Guardando...").attr("disabled", true);
+    }      
 </script>
 @endsection

@@ -82,4 +82,19 @@ class ConstantController extends Controller
     {
         //
     }
+
+    public function ajaxUpdate(Request $request)
+    {
+        $constant = null;
+        try {
+            $constant = Constant::whereName($request->field)->first();
+            $constant->value = $request->value;
+            $constant->save();
+        } catch (\Exception $e) {
+            session()->put('warning',__('An error has occured'));
+            session()->put('exception', $e->getMessage());
+        } finally {            
+            return \Response::json($constant);
+        }
+    }
 }

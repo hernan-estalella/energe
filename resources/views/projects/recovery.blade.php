@@ -8,7 +8,7 @@
                         <div class="form-group col-12">
                             <label>Pot. a instalar</label>
                             <div class="input-group input-group-sm mb-3">
-                                <input type="text" class="form-control" name="cotization">
+                                <input type="text" class="form-control right" id="potency" readonly>
                                 <div class="input-group-append">
                                     <span class="input-group-text">Wp</span>
                                 </div>
@@ -17,7 +17,7 @@
                         <div class="form-group col-12">
                             <label>Costo inversión</label>
                             <div class="input-group input-group-sm mb-3">
-                                <input type="text" class="form-control" name="cotization">
+                                <input type="text" class="form-control right" id="investment" readonly>
                                 <div class="input-group-append">
                                     <span class="input-group-text">USD/Wp</span>
                                 </div>
@@ -29,13 +29,13 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">USD</span>
                                 </div>
-                                <input type="text" class="form-control" name="cotization">
+                                <input type="text" class="form-control right" id="fiscal_bonus" readonly>
                             </div>
                         </div>
                         <div class="form-group col-12">
                             <label>Inflación energética 1° año</label>
                             <div class="input-group input-group-sm mb-3">
-                                <input type="text" class="form-control" name="cotization">
+                                <input type="text" class="form-control right" id="inflation_1" onblur="someInflationUpdated();">
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>
                                 </div>
@@ -44,7 +44,7 @@
                         <div class="form-group col-12">
                             <label>Inflación energética 8 años</label>
                             <div class="input-group input-group-sm mb-3">
-                                <input type="text" class="form-control" name="cotization">
+                                <input type="text" class="form-control right" id="inflation_8" onblur="someInflationUpdated();">
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>
                                 </div>
@@ -53,7 +53,7 @@
                         <div class="form-group col-12">
                             <label>Inflación energética resto</label>
                             <div class="input-group input-group-sm mb-3">
-                                <input type="text" class="form-control" name="cotization">
+                                <input type="text" class="form-control right" id="inflation_rest" onblur="someInflationUpdated();">
                                 <div class="input-group-append">
                                     <span class="input-group-text">%</span>
                                 </div>

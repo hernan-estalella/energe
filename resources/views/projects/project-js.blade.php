@@ -90,6 +90,7 @@
             success: function (response) {
                 radiationItems.forEach(element => {
                     element.radiation = response[0]["m_"+element.month];
+                    calculateGeneration(element.month);
                 });
                 radiationTable.ajax.reload();
                 radiationTable.columns.adjust().draw();

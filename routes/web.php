@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::post('/constants/ajaxUpdate', 'ConstantController@ajaxUpdate')->name('constants.ajaxUpdate');
 Route::resource('projects', 'ProjectController')->except('show');
 Route::post('/clients/fast-store', 'ClientController@fastStore')->name('clients.fastStore');
 Route::get('/zones/ajax-get-radiations', 'ZoneController@ajaxGetRadiations')->name('zones.ajaxGetRadiations');

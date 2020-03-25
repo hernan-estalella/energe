@@ -15,6 +15,8 @@ class CreateConstantsTable extends Migration
     {
         Schema::create('constants', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name');
+            $table->decimal('value',13,3);
             $table->timestamps();
         });
     }
