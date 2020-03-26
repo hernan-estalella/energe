@@ -1,10 +1,14 @@
 <script>
     potency = new AutoNumeric("#potency", integer);
     investment = new AutoNumeric("#investment", integer);
-    fiscal_bonus = new AutoNumeric("#fiscal_bonus", integer);
+    fiscal_bonus = new AutoNumeric("#fiscal_bonus", decimal);
     inflation_1 = new AutoNumeric("#inflation_1", decimal);
     inflation_8 = new AutoNumeric("#inflation_8", decimal);
     inflation_rest = new AutoNumeric("#inflation_rest", decimal);
+    discount_rate = new AutoNumeric("#discount_rate", decimal);
+    van = new AutoNumeric("#van", integer);
+    tir = new AutoNumeric("#tir", decimal);
+    recovery_years = new AutoNumeric("#recovery_years", integer);
 
     var radiationItems = [];
 
@@ -155,6 +159,59 @@
         }
     });
 
+    var dataCashflow = [];
+    var ctxflow = document.getElementById('cashflowChart').getContext('2d');
+    var dataChartFlow = [{
+                    label: 'Flujo de caja',
+                    backgroundColor: [
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)',
+                        'rgba(0,112,192,25)'
+                    ],
+                    //data: [ 12877,12214,11285,9587,7638,6374,6849,8228,9549,11635,12587,12874 ]
+                    data: dataCashflow
+            }];
+
+    cashflowChart = new Chart(ctxflow, {
+        type: 'bar',
+        data: {
+            labels: ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25'],
+            datasets: dataChartFlow,
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
     function calculateRadiation(month) {
         var element = radiationItems[month - 1];
         element.consumption = consumptions[month - 1].getNumber();
@@ -167,10 +224,10 @@
 
     function calculateGeneration(month) {
         var element = radiationItems[month - 1];
-        element.generation = element.radiation * potency.getNumber() * 31 * 0.85 / 1000;
+        element.generation = roundTo(element.radiation * potency.getNumber() * 31 * 0.85 / 1000, 0);
         generations[month - 1].set(element.generation);
         dataGenerations[month - 1] = generations[month - 1].getNumber();
-        element.solar_fraction = (element.consumption > 0 ? element.generation / element.consumption * 100 : 0);
+        element.solar_fraction = roundTo((element.consumption > 0 ? element.generation / element.consumption * 100 : 0), 2);
         element.energy_sold = (element.generation > element.consumption ? element.generation - element.consumption : 0);
         element.energy_buyed = (element.generation > element.consumption ? 0 : element.consumption - element.generation);
         radiationTable.ajax.reload();
@@ -186,13 +243,13 @@
     }
 
     function fiscalBonusUpdated() {
-        cashflowItems[7][1] = fiscal_bonus.getNumber() * exchange_rate.getNumber();
+        cashflowItems[7][1] = -(roundTo(fiscal_bonus.getNumber() * exchange_rate.getNumber(), 0));
         cashflowTable.ajax.reload();
         cashflowTable.columns.adjust().draw();
     }
 
     function investmentUpdated() {        
-        cashflowItems[7][0] = investment.getNumber() * exchange_rate.getNumber();
+        cashflowItems[7][0] = roundTo(investment.getNumber() * exchange_rate.getNumber(), 0);
         cashflowTable.ajax.reload();
         cashflowTable.columns.adjust().draw();
     }
@@ -208,11 +265,21 @@
                 kc += kc * inflation_rest.getNumber() / 100;
             }
             
-            cashflowItems[0][index] = kc;
-            cashflowItems[2][index] = cashflowItems[0][index] * cashflowItems[1][index];
-            cashflowItems[3][index] = kc * 0.6;
+            cashflowItems[0][index] = roundTo(kc, 2);
+            cashflowItems[2][index] = roundTo(cashflowItems[0][index] * cashflowItems[1][index], 2);
+            cashflowItems[3][index] = roundTo(kc * 0.6, 2);
         }
         cashflowTable.ajax.reload();
         cashflowTable.columns.adjust().draw();
+    }
+
+    function discountRateUpdated() {
+        var added = 0;
+        var dr = discount_rate.getNumber() / 100;
+        for (let index = 1; index <= 25; index++) {
+            added += cashflowItems[9][index] / Math.pow((1 + dr), index);
+        }
+
+        van.set(cashflowItems[9][0] + added);
     }
 </script>

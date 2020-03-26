@@ -115,11 +115,12 @@
         'ajax': function (data, callback, settings) {
                 callback({ data: cashflowItems })
         },
+        fixedColumns:   {
+            leftColumns: 1
+        },
         columnDefs: [
-            {
-                targets: '_all',
-                className: 'dt-right'
-            }
+            { targets: '_all', className: 'dt-right' },
+            /* { targets: 0, width: "100%" } */
         ],
         "createdRow": function( row, data, dataIndex){
             $(row).addClass(data.type);
@@ -142,14 +143,14 @@
         for (let index = 0; index <= 25; index++) {
             if (index >= 1) {
                 cashflowItems[1][index] = annual_consumption.getNumber();
-                cashflowItems[2][index] = cashflowItems[0][index] * cashflowItems[1][index];
+                cashflowItems[2][index] = roundTo(cashflowItems[0][index] * cashflowItems[1][index], 2);
                 cashflowItems[4][index] = energyBuyed;
                 cashflowItems[5][index] = energySold;
 
-                cashflowItems[6][index] = cashflowItems[0][index] * cashflowItems[4][index] - cashflowItems[3][index] * cashflowItems[5][index];
+                cashflowItems[6][index] = roundTo((cashflowItems[0][index] * cashflowItems[4][index]) - (cashflowItems[3][index] * cashflowItems[5][index]), 0);
             }
             
-            cashflowItems[9][index] = cashflowItems[3][index] - cashflowItems[6][index] + cashflowItems[8][index] - cashflowItems[7][index];
+            cashflowItems[9][index] = cashflowItems[2][index] - cashflowItems[6][index] + cashflowItems[8][index] - cashflowItems[7][index];
 
             if (index >= 1) {
                 cashflowItems[10][index] = cashflowItems[10][index - 1] + cashflowItems[9][index];
@@ -159,6 +160,15 @@
         }
         cashflowTable.ajax.reload();
         cashflowTable.columns.adjust().draw();
+        updateCashflowChart();
+        discountRateUpdated();
+    }
+
+    function updateCashflowChart() {
+        for (let index = 0; index <= 25; index++) {
+            dataCashflow[index] = cashflowItems[10][index];
+        }
+        cashflowChart.update();
     }
 
     //$(window).resize(resizeRadiationTable);

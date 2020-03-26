@@ -1,6 +1,7 @@
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script src="//cdn.datatables.net/plug-ins/1.10.20/api/processing().js"></script>
+<script src="//cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
 <script>
     $.extend( 
         $.fn.dataTable.defaults, {

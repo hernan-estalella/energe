@@ -96,6 +96,10 @@
         var __integerFormatter = new Intl.NumberFormat('es', { style: 'currency', currency: 'EUR' });
         var __decimalFormatter = new Intl.NumberFormat("es", {minimumFractionDigits: 2});
         var __currencyFormatter = new Intl.NumberFormat("es", {style: "currency", currency: 'ARS'});
+
+        function roundTo(num,dec) {    
+            return +(Math.round(num + "e+"+dec)  + "e-"+dec);
+        }
     </script>
     @include('layouts.notification')
     @yield('custom_scripts')

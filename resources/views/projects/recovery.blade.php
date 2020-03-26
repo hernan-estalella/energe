@@ -59,6 +59,38 @@
                                 </div>
                             </div>
                         </div>
+                        <hr>
+                        <div class="form-group col-12">
+                            <label>Tasa de descuento</label>
+                            <div class="input-group input-group-sm mb-3">
+                                <input type="text" class="form-control right" id="discount_rate" onblur="discountRateUpdated();">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-12">
+                            <label>VAN</label>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                </div>
+                                <input type="text" class="form-control right" id="van" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group col-12">
+                            <label>TIR</label>
+                            <div class="input-group input-group-sm mb-3">
+                                <input type="text" class="form-control right" id="tir" readonly>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-12">
+                            <label>Años de recupero</label>
+                            <input type="text" class="form-control right" id="recovery_years" readonly>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,8 +110,17 @@
                 <thead>
             </table>
             <hr>
-            <div class="chart-container" style="position: relative; width:50%">
-                <canvas id="compareChart"></canvas>
+            <div class="row">
+                <div class="col-6">
+                    <div class="chart-container" style="position: relative; width:100%">
+                        <canvas id="compareChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="chart-container" style="position: relative; width:100%">
+                        <canvas id="cashflowChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
