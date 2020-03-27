@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ClientValidator extends FormRequest
+class InverterValidator extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,9 @@ class ClientValidator extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:clients,name,'.$this->id,',id',
-            'address' => 'required'
+            'name' => 'required|unique:inverters,name,'.$this->id,',id',
+            'min_panels' => 'gt:0|lt:max_panels',
+            'max_panels' => 'gt:min_panels'
         ];
     }
 
@@ -34,7 +35,9 @@ class ClientValidator extends FormRequest
         return [
             'name.required' => 'Ingrese el nombre',
             'name.unique' => 'El nombre ingresado ya está registrado',
-            'address.required' => 'Ingrese la dirección'
+            'min_panels.gt' => 'Ingrese el valor mínimo de paneles',
+            'min_panels.lt' => 'El valor mínimo de paneles no puede ser mayor que el valor máximo',
+            'max_panels.gt' => 'El valor máximo de paneles no puede ser menor que el valor mínimo'
         ];
     }
 }

@@ -2,16 +2,15 @@
     <div class="row">
         <div class="form-group col-2">
             @include('commons.asterix-sm')<label>Cliente</label>
-            <select class="selectpicker" name="client_id">
+            <select class="selectpicker" name="client_id" onchange="setAddress();">
                 @foreach($clients as $client)
                 <option value="{{$client->id}}">{{$client->name}}</option>
                 @endforeach
             </select>
         </div>
-        <div class="form-group col-3">
-            <label>Ubicación</label>
-            <p>Aca va la ubicación</p>
-            <a href="https://www.google.com.ar/maps/@-32.770714,-68.7137594,14.46z" target="blank" class="btn btn-sm btn-success"><i class="fas fa-map-marker-alt"></i></a>
+        <div class="form-group col-4">
+            <label>Dirección</label>
+            <p id="client_address"></p>
         </div>
         <div class="form-group col-1">
             @include('commons.asterix-sm')<label>Zona</label>

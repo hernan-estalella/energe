@@ -26,15 +26,9 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                {{-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    @if(!Request::is('/') && !Request::is('home') && !Request::is('login'))
-                        @auth
-                            @includeWhen(Auth::user()->type === 'USER', 'menu.user-bar')
-                            @includeWhen(Auth::user()->type === 'PROFESSIONAL', 'menu.professional-bar')
-                            @includeWhen(Auth::user()->type === 'PATIENT', 'menu.patient-bar')
-                        @endauth
-                    @endif
-                    <ul class="navbar-nav ml-auto">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    @include('menu.admin-bar')
+                {{-- <ul class="navbar-nav ml-auto">
                         @auth
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -81,8 +75,8 @@
                                 </div>
                             </li>
                         @endif
-                    </ul>
-                </div> --}}
+                    </ul> --}}
+                </div>
             </div>
         </nav>
         <main class="py-4">

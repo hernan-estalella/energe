@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ClientValidator extends FormRequest
+class AssessorValidator extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class ClientValidator extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:clients,name,'.$this->id,',id',
-            'address' => 'required'
+            'name' => 'required|unique:assessors,name,'.$this->id,',id',
+            'email' => 'nullable|email'
         ];
     }
 
@@ -34,7 +34,7 @@ class ClientValidator extends FormRequest
         return [
             'name.required' => 'Ingrese el nombre',
             'name.unique' => 'El nombre ingresado ya está registrado',
-            'address.required' => 'Ingrese la dirección'
+            'email.email' => 'Ingrese un correo electrónico válido'
         ];
     }
 }

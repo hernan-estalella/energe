@@ -8,6 +8,13 @@ use App\Http\Requests\ClientValidator;
 
 class ClientController extends Controller
 {
+    private $path;
+
+    public function __construct()
+    {
+        $this->path = 'clients';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +22,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        return view($this->path.'.index');
     }
 
     /**
@@ -25,7 +32,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        return view($this->path.'.create');
     }
 
     /**
@@ -34,9 +41,18 @@ class ClientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClientValidator $request)
     {
-        //
+        try {
+            $client = new Client($request->all());
+            $client->save();
+            session()->put('success', 'Nuevo cliente registrado');
+        } catch (\Exception $e) {
+            session()->put('warning',__('An error has occured'));
+            session()->put('exception', $e->getMessage());
+        } finally {            
+            return redirect()->route($this->path.'.index');
+        }
     }
 
     /**
@@ -58,7 +74,7 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        //
+        return view($this->path.'.edit', compact('client'));
     }
 
     /**
@@ -68,9 +84,18 @@ class ClientController extends Controller
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client)
+    public function update(ClientValidator $request, Client $client)
     {
-        //
+        try {
+            $client->fill($request->all());
+            $client->save();
+            session()->put('success', 'Cliente actualizado correctamente');
+        } catch (\Exception $e) {
+            session()->put('warning',__('An error has occured'));
+            session()->put('exception', $e->getMessage());
+        } finally {            
+            return redirect()->route($this->path.'.index');
+        }
     }
 
     /**
@@ -103,5 +128,21 @@ class ClientController extends Controller
         } finally {            
             return \Response::json($client);
         }
+    }
+
+    /**
+     * Process dataTable ajax response.
+     *
+     * @param \Yajra\Datatables\Datatables $datatables
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ajax()
+    {
+        $builder = Client::select(['id','name','address']);
+        return datatables()
+                ->eloquent($builder)
+                ->addColumn('actions', 'clients.actions')
+                ->rawColumns(['actions'])
+                ->make();
     }
 }

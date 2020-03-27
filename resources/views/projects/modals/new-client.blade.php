@@ -14,7 +14,7 @@
                         <input type="text" id="new_name" class="form-control" placeholder="Nombre" autofocus>
                     </div>
                     <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                        <label>Dirección</label>
+                        @include("commons.asterix-sm")<label>Dirección</label>
                         <input type="text" id="new_address" class="form-control" placeholder="Dirección">
                     </div>
                 </div>

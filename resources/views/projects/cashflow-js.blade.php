@@ -119,8 +119,7 @@
             leftColumns: 1
         },
         columnDefs: [
-            { targets: '_all', className: 'dt-right' },
-            /* { targets: 0, width: "100%" } */
+            { targets: '_all', className: 'dt-right' }
         ],
         "createdRow": function( row, data, dataIndex){
             $(row).addClass(data.type);

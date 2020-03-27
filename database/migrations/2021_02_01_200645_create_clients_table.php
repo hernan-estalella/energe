@@ -19,7 +19,7 @@ class CreateClientsTable extends Migration
             $table->string('address')->nullable();
             $table->decimal('lat',9,6)->nullable();
             $table->decimal('lng',9,6)->nullable();
-            $table->unsignedBigInteger('zone_id');
+            $table->unsignedBigInteger('zone_id')->nullable();
             $table->foreign('zone_id')->references('id')->on('zones');
             $table->string('email')->nullable();
             $table->string('telephone')->nullable();

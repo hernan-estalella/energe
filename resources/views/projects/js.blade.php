@@ -13,7 +13,7 @@
         resizeRadiationTable();
         resizeProposalsTable();
 
-        consumption_1.set(43128);
+        /* consumption_1.set(43128);
         value_1.set(43128);
         $("#consumption_1").blur();
         $("#value_1").blur();
@@ -140,6 +140,6 @@
         $("#inflation_1").blur();
         $("#inflation_8").blur();
         $("#inflation_rest").blur();
-        $("#discount_rate").blur();
+        $("#discount_rate").blur(); */
     });
 </script>

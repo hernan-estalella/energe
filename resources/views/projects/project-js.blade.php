@@ -3,12 +3,25 @@
         noneResultsText: $.fn.selectpicker.Constructor.DEFAULTS.noneResultsText + "<br><button type='button' class='btn btn-success' onclick='newClient()'>Crear nuevo</button>"
     });
 
+    clientsData = [];
+
+    @foreach($clients as $client)
+    clientsData.push({
+        'address': "{{$client->address}}"
+    });
+    @endforeach
+
+    function setAddress() {
+        let index = $('select[name="client_id"]').prop('selectedIndex');
+        $("#client_address").html(clientsData[index].address);
+    }
+
     function newClient() {
         $('#newClientModal').modal('show');
     }
 
     function storeNewClient(){
-        if ($("#new_name").val() != "") {
+        if ($("#new_name").val() != "" && $("#new_address").val() != "") {
                 var _token = $('input[name="_token"]').val();
                 var data = {
                     'name' : $("#new_name").val(),
@@ -71,7 +84,25 @@
                 $("#new_address").val("");
                 $("#newClientModal").modal('hide');           
         } else {
-            //Show error
+            $.notify(
+                {
+                    // options
+                    icon: 'fas fa-exclamation-circle',
+                    title: def_title,
+                    message: "Ingrese todos los campos obligatorios"
+                },{
+                    // settings
+                    type: "warning",
+                    newest_on_top: true,
+                    showProgressbar: false,
+                    mouse_over: 'pause',
+                    animate: {
+                        enter: 'animated bounceIn',
+                        exit: 'animated bounceOut'
+                    },
+                    z_index: 9000
+                }
+            );
         }
     }
     

@@ -12,10 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('home');
+    return redirect()->route('projects.create');
 });
 
 Route::post('/constants/ajaxUpdate', 'ConstantController@ajaxUpdate')->name('constants.ajaxUpdate');
 Route::resource('projects', 'ProjectController')->except('show');
+Route::resource('clients', 'ClientController')->except('show');
+Route::get('/clients/ajax', 'ClientController@ajax')->name('clients.ajax');
 Route::post('/clients/fast-store', 'ClientController@fastStore')->name('clients.fastStore');
+Route::resource('assessors', 'AssessorController')->except('show');
+Route::get('/assessors/ajax', 'AssessorController@ajax')->name('assessors.ajax');
+Route::resource('inverters', 'InverterController')->except('show');
+Route::get('/inverters/ajax', 'InverterController@ajax')->name('inverters.ajax');
 Route::get('/zones/ajax-get-radiations', 'ZoneController@ajaxGetRadiations')->name('zones.ajaxGetRadiations');
