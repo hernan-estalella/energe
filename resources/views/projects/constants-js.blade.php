@@ -80,13 +80,13 @@
     function panelPotencyUpdated() {
         if (proposalsItems.length > 0) {
             proposalsItems.forEach(proposal => {
-                proposal.proposal_usd_iva = proposal.proposal_panels_q * panel_potency.getNumber() * proposal.proposal_usd_w;
-                proposal.proposal_kw = proposal.proposal_panels_q * panel_potency.getNumber() / 1000;
-                benefit_calculated = proposal.proposal_kw  * limit_usd_kwp.getNumber();
-                proposal.proposal_benefit = benefit_calculated > benefit_usd.getNumber() ? benefit_usd.getNumber() : benefit_calculated;
-                proposal.proposal_porc_price = __decimalFormatter.format(proposal.proposal_benefit / proposal.proposal_usd_iva);
-                if (proposal.proposal_main) {
-                    potency.set(proposal.proposal_kw * 1000);
+                proposal.usd_iva = proposal.panels_q * panel_potency.getNumber() * proposal.usd_w;
+                proposal.kw = proposal.panels_q * panel_potency.getNumber() / 1000;
+                benefit_calculated = proposalkw  * limit_usd_kwp.getNumber();
+                proposal.benefit = benefit_calculated > benefit_usd.getNumber() ? benefit_usd.getNumber() : benefit_calculated;
+                proposal.porc_price = __decimalFormatter.format(proposal.benefit / proposal.usd_iva);
+                if (proposal.main) {
+                    potency.set(proposal.kw * 1000);
                 }
             });            
             proposalsTable.ajax.reload();
@@ -101,7 +101,7 @@
     function treesUpdated() {
         if (proposalsItems.length > 0) {
             proposalsItems.forEach(proposal => {
-                proposal.proposal_trees = proposal.proposal_co2 * trees.getNumber();
+                proposal.trees = proposal.co2 * trees.getNumber();
             });            
             proposalsTable.ajax.reload();
             proposalsTable.columns.adjust().draw();
@@ -112,9 +112,9 @@
         benefit_usd.set(benefit.getNumber() / exchange_rate.getNumber());
         if (proposalsItems.length > 0) {
             proposalsItems.forEach(proposal => {
-                benefit_calculated = proposal.proposal_kw  * limit_usd_kwp.getNumber();
-                proposal.proposal_benefit = benefit_calculated > benefit_usd.getNumber() ? benefit_usd.getNumber() : benefit_calculated;
-                proposal.proposal_porc_price = __decimalFormatter.format(proposal.proposal_benefit / proposal.proposal_usd_iva);
+                benefit_calculated = proposal.kw  * limit_usd_kwp.getNumber();
+                proposal.benefit = benefit_calculated > benefit_usd.getNumber() ? benefit_usd.getNumber() : benefit_calculated;
+                proposal.porc_price = __decimalFormatter.format(proposal.benefit / proposal.usd_iva);
             });            
             proposalsTable.ajax.reload();
             proposalsTable.columns.adjust().draw();

@@ -10,9 +10,9 @@ class Zone extends Model
         'name'
     ];
 
-    public function radiations()
+    public function radiation()
     {
-        return $this->hasMany('App\Radiation');
+        return $this->hasOne('App\Radiation');
     }
 
     public function clients()

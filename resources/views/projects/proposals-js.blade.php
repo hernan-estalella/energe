@@ -7,30 +7,30 @@
         'info': false,
         "scrollX": true,
         'columns': [
-            {data:"proposal_name"},
-            {data:"proposal_usd_w"},
-            {data:"proposal_inverter_1_q"},
-            {data:"proposal_inverter_1_name"},
-            {data:"proposal_inverter_2_q"},
-            {data:"proposal_inverter_2_name"},
-            {data:"proposal_inverter_3_q"},
-            {data:"proposal_inverter_3_name"},
-            {data:"proposal_panels_q"},
-            {data:"proposal_usd_iva"},
-            {data:"proposal_kw"},
-            {data:"proposal_benefit"},
-            {data:"proposal_porc_price"},
-            {data:"proposal_m2"},
-            {data:"proposal_generation"},
-            {data:"proposal_solar_fraction"},
-            {data:"proposal_co2"},
-            {data:"proposal_trees"},
-            {data:"proposal_specific_gener"},
-            {data:"proposal_actions"},
+            {data:"name"},
+            {data:"usd_w"},
+            {data:"inverter_1_q"},
+            {data:"inverter_1_name"},
+            {data:"inverter_2_q"},
+            {data:"inverter_2_name"},
+            {data:"inverter_3_q"},
+            {data:"inverter_3_name"},
+            {data:"panels_q"},
+            {data:"usd_iva"},
+            {data:"kw"},
+            {data:"benefit"},
+            {data:"porc_price"},
+            {data:"m2"},
+            {data:"generation"},
+            {data:"solar_fraction"},
+            {data:"co2"},
+            {data:"trees"},
+            {data:"specific_gener"},
+            {data:"actions"},
             //
-            {data:"proposal_inverter_1_id", visible: false},
-            {data:"proposal_inverter_2_id", visible: false},
-            {data:"proposal_inverter_3_id", visible: false}
+            {data:"inverter_1_id", visible: false},
+            {data:"inverter_2_id", visible: false},
+            {data:"inverter_3_id", visible: false}
         ],
         'ajax': function (data, callback, settings) {
                 callback({ data: proposalsItems })
@@ -74,17 +74,17 @@
             proposal_inverter_3_q = proposal_inverter_3_id == null ? null : q_inverter_3.getNumber();
             proposal_inverter_3_name = proposal_inverter_3_id == null ? null : $("#proposal_inverter_3 option:selected").text();
             proposal_panels_q = q_panels.getNumber();
-            proposal_usd_iva = q_panels.getNumber() * panel_potency.getNumber() * usd_w.getNumber();
-            proposal_kw = q_panels.getNumber() * panel_potency.getNumber() / 1000;
-            benefit_calculated = proposal_kw * limit_usd_kwp.getNumber();
+            proposal_usd_iva = roundTo(proposal_panels_q * panel_potency.getNumber() * proposal_usd_w, 0);
+            proposal_kw = roundTo(proposal_panels_q * panel_potency.getNumber() / 1000, 2);
+            benefit_calculated = roundTo(proposal_kw * limit_usd_kwp.getNumber(), 0);
             proposal_benefit = benefit_calculated > benefit_usd.getNumber() ? benefit_usd.getNumber() : benefit_calculated;
-            proposal_porc_price = proposal_benefit / proposal_usd_iva * 100;
+            proposal_porc_price = roundTo(proposal_benefit / proposal_usd_iva * 100, 0);
             proposal_m2 = proposal_panels_q * 3;
             proposal_generation = proposal_kw * 1700;
-            proposal_solar_fraction = proposal_generation / annual_consumption.getNumber() * 100;
+            proposal_solar_fraction = roundTo(proposal_generation / annual_consumption.getNumber() * 100, 0);
             proposal_co2 = proposal_generation * kg_co2.getNumber();
-            proposal_trees = proposal_co2 * trees.getNumber();
-            proposal_specific_gener = proposal_generation / proposal_kw;
+            proposal_trees = roundTo(proposal_co2 * trees.getNumber(), 0);
+            proposal_specific_gener = roundTo(proposal_generation / proposal_kw, 0);
             proposal_actions = "<button type='button' class='btn btn-sm btn-" + (proposalsItems.length == 0 ? '' : 'outline-') + "success' onclick='setMain(\"" + proposal_name + "\");'>Principal</button>";
             proposal_main = false;
             if (proposalsItems.length == 0) {
@@ -97,30 +97,30 @@
                 investmentUpdated();
             }
             proposal = {
-                'proposal_name' : proposal_name,
-                'proposal_usd_w' : proposal_usd_w,
-                'proposal_inverter_1_id' : proposal_inverter_1_id,
-                'proposal_inverter_1_q' : proposal_inverter_1_q,
-                'proposal_inverter_1_name' : proposal_inverter_1_name,
-                'proposal_inverter_2_id' : proposal_inverter_2_id,
-                'proposal_inverter_2_q' : proposal_inverter_2_q,
-                'proposal_inverter_2_name' : proposal_inverter_2_name,
-                'proposal_inverter_3_id' : proposal_inverter_3_id,
-                'proposal_inverter_3_q' : proposal_inverter_3_q,
-                'proposal_inverter_3_name' : proposal_inverter_3_name,
-                'proposal_panels_q' : proposal_panels_q,
-                'proposal_usd_iva' : proposal_usd_iva,
-                'proposal_kw' : proposal_kw,
-                'proposal_benefit' : proposal_benefit,
-                'proposal_porc_price' : proposal_porc_price,
-                'proposal_m2' : proposal_m2,
-                'proposal_generation' : proposal_generation,
-                'proposal_solar_fraction' : proposal_solar_fraction,
-                'proposal_co2' : proposal_co2,
-                'proposal_trees' : proposal_trees,
-                'proposal_specific_gener' : proposal_specific_gener,
-                'proposal_actions' : proposal_actions,
-                'proposal_main' : proposal_main
+                'name' : proposal_name,
+                'usd_w' : proposal_usd_w,
+                'inverter_1_id' : proposal_inverter_1_id,
+                'inverter_1_q' : proposal_inverter_1_q,
+                'inverter_1_name' : proposal_inverter_1_name,
+                'inverter_2_id' : proposal_inverter_2_id,
+                'inverter_2_q' : proposal_inverter_2_q,
+                'inverter_2_name' : proposal_inverter_2_name,
+                'inverter_3_id' : proposal_inverter_3_id,
+                'inverter_3_q' : proposal_inverter_3_q,
+                'inverter_3_name' : proposal_inverter_3_name,
+                'panels_q' : proposal_panels_q,
+                'usd_iva' : proposal_usd_iva,
+                'kw' : proposal_kw,
+                'benefit' : proposal_benefit,
+                'porc_price' : proposal_porc_price,
+                'm2' : proposal_m2,
+                'generation' : proposal_generation,
+                'solar_fraction' : proposal_solar_fraction,
+                'co2' : proposal_co2,
+                'trees' : proposal_trees,
+                'specific_gener' : proposal_specific_gener,
+                'actions' : proposal_actions,
+                'main' : proposal_main
             };
 
             proposalsItems.push(proposal);
@@ -169,12 +169,17 @@
 
         var errors = [];
 
+        if(proposalsItems.length == 3) {
+            errors.push("Sólo se pueden ingresar 3 alternativas");
+            return errors;
+        }
+
         if ($("#proposal_name").val() == '') {
             errors.push("Ingrese el nombre");
         }
 
         proposalsItems.forEach(element => {
-            if(element.proposal_name == $("#proposal_name").val()) {
+            if(element.name == $("#proposal_name").val()) {
                 errors.push("Ya existe una propuesta con el mismo nombre");
             }
         });
@@ -230,18 +235,18 @@
 
     function setMain(proposal_name) {
         proposalsItems.forEach(element => {
-            if(element.proposal_name == proposal_name) {
-                element.proposal_actions = element.proposal_actions.replace("btn-outline-success", "btn-success");
-                element.proposal_main = true;
-                potency.set(element.proposal_kw * 1000);
+            if(element.name == proposal_name) {
+                element.actions = element.proposal_actions.replace("btn-outline-success", "btn-success");
+                element.main = true;
+                potency.set(element.kw * 1000);
                 potencyUpdated();
-                fiscal_bonus.set(element.proposal_benefit);
+                fiscal_bonus.set(element.benefit);
                 fiscalBonusUpdated();
-                investment.set(element.proposal_usd_iva);
+                investment.set(element.usd_iva);
                 investmentUpdated();
             } else {
-                element.proposal_actions = element.proposal_actions.replace("btn-success", "btn-outline-success");
-                element.proposal_main = false;
+                element.actions = element.actions.replace("btn-success", "btn-outline-success");
+                element.main = false;
             }
         });
         proposalsTable.ajax.reload();

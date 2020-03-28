@@ -24,4 +24,6 @@ Route::resource('assessors', 'AssessorController')->except('show');
 Route::get('/assessors/ajax', 'AssessorController@ajax')->name('assessors.ajax');
 Route::resource('inverters', 'InverterController')->except('show');
 Route::get('/inverters/ajax', 'InverterController@ajax')->name('inverters.ajax');
+Route::resource('zones', 'ZoneController')->except('show');
+Route::get('/zones/ajax', 'ZoneController@ajax')->name('zones.ajax');
 Route::get('/zones/ajax-get-radiations', 'ZoneController@ajaxGetRadiations')->name('zones.ajaxGetRadiations');

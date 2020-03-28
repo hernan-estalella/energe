@@ -18,7 +18,7 @@ class CreateRadiationsTable extends Migration
             $table->unsignedBigInteger('zone_id');
             $table->foreign('zone_id')->references('id')->on('zones');
             for ($i=1; $i <= 12; $i++) { 
-                $table->decimal("m_$i",3,2);
+                $table->decimal("m_$i",5,2);
             }
             $table->timestamps();
         });

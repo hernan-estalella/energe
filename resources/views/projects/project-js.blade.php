@@ -12,7 +12,7 @@
     @endforeach
 
     function setAddress() {
-        let index = $('select[name="client_id"]').prop('selectedIndex');
+        let index = $("#client_id").prop('selectedIndex');
         $("#client_address").html(clientsData[index].address);
     }
 
@@ -109,7 +109,7 @@
     function setRadiationValues() {
         var _token = $('input[name="_token"]').val();
         var data = {
-            'id' : $("select[name='zone_id'").val(),
+            'id' : $("#zone_id").val(),
             _token : _token
         };
 
@@ -120,7 +120,7 @@
             dataType: "json",
             success: function (response) {
                 radiationItems.forEach(element => {
-                    element.radiation = response[0]["m_"+element.month];
+                    element.radiation = response["m_"+element.month];
                     calculateGeneration(element.month);
                 });
                 radiationTable.ajax.reload();

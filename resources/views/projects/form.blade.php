@@ -18,6 +18,10 @@
                         <a class="nav-link" href="#proposals" role="tab" aria-controls="proposals"
                             aria-selected="false">Propuestas</a>
                     </li>
+                    {{-- <li class="nav-item">
+                        <a class="nav-link" href="#loan" role="tab" aria-controls="loan"
+                            aria-selected="false">Financiamiento</a>
+                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link" href="#recovery" role="tab" aria-controls="recovery"
                             aria-selected="false">Recupero</a>
@@ -33,6 +37,7 @@
                     @include('projects.project')
                     @include('projects.invoices')
                     @include('projects.proposals')
+                    {{-- @include('projects.loan') --}}
                     @include('projects.recovery')
                     @include('projects.cashflow')
                 </div>

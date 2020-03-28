@@ -3,10 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Zone;
+use App\Radiation;
 use Illuminate\Http\Request;
+use App\Http\Requests\ZoneValidator;
 
 class ZoneController extends Controller
 {
+    private $path;
+
+    public function __construct()
+    {
+        $this->path = 'zones';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +23,7 @@ class ZoneController extends Controller
      */
     public function index()
     {
-        //
+        return view($this->path.'.index');
     }
 
     /**
@@ -24,7 +33,7 @@ class ZoneController extends Controller
      */
     public function create()
     {
-        //
+        return view($this->path.'.create');
     }
 
     /**
@@ -33,9 +42,21 @@ class ZoneController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ZoneValidator $request)
     {
-        //
+        try {
+            $zone = new Zone($request->all());
+            $zone->save();
+            $radiation = new Radiation($request->all());
+            $zone->radiation()->save($radiation);
+            //$radiation->save();
+            session()->put('success', 'Nueva zona registrada');
+        } catch (\Exception $e) {
+            session()->put('warning',__('An error has occured'));
+            session()->put('exception', $e->getMessage());
+        } finally {            
+            return redirect()->route($this->path.'.index');
+        }
     }
 
     /**
@@ -57,7 +78,7 @@ class ZoneController extends Controller
      */
     public function edit(Zone $zone)
     {
-        //
+        return view($this->path.'.edit', compact('zone'));
     }
 
     /**
@@ -67,9 +88,19 @@ class ZoneController extends Controller
      * @param  \App\Zone  $zone
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Zone $zone)
+    public function update(ZoneValidator $request, Zone $zone)
     {
-        //
+        try {
+            $zone->fill($request->all());
+            $zone->save();
+            $zone->radiation->fill($request->all())->save();
+            session()->put('success', 'Zona actualizada correctamente');
+        } catch (\Exception $e) {
+            session()->put('warning',__('An error has occured'));
+            session()->put('exception', $e->getMessage());
+        } finally {            
+            return redirect()->route($this->path.'.index');
+        }
     }
 
     /**
@@ -89,6 +120,22 @@ class ZoneController extends Controller
     public function ajaxGetRadiations(Request $request)
     {
         $zone = Zone::find($request->id);
-        return \Response::json($zone->radiations);
+        return \Response::json($zone->radiation);
+    }
+
+    /**
+     * Process dataTable ajax response.
+     *
+     * @param \Yajra\Datatables\Datatables $datatables
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ajax()
+    {
+        $builder = Zone::select(['id','name']);
+        return datatables()
+                ->eloquent($builder)
+                ->addColumn('actions', 'zones.actions')
+                ->rawColumns(['actions'])
+                ->make();
     }
 }

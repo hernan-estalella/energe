@@ -8,12 +8,195 @@
         $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
     } );
 
+    function save() {
+        var errors = isProjectComplete();
+        if (errors.length == 0) {
+            var _token = $('input[name="_token"]').val();
+            let cashflowData = [];
+            var r = 0;
+            cashflowItems.forEach(element => {
+                var registry = [];
+                cashflowData.push({
+                    row: r,
+                    label: element.name,
+                    value_0: element['0'],
+                    value_1: element['1'],
+                    value_2: element['2'],
+                    value_3: element['3'],
+                    value_4: element['4'],
+                    value_5: element['5'],
+                    value_6: element['6'],
+                    value_7: element['7'],
+                    value_8: element['8'],
+                    value_9: element['9'],
+                    value_10: element['10'],
+                    value_11: element['11'],
+                    value_12: element['12'],
+                    value_13: element['13'],
+                    value_14: element['14'],
+                    value_15: element['15'],
+                    value_16: element['16'],
+                    value_17: element['17'],
+                    value_18: element['18'],
+                    value_19: element['19'],
+                    value_20: element['20'],
+                    value_21: element['21'],
+                    value_22: element['22'],
+                    value_23: element['23'],
+                    value_24: element['24'],
+                    value_25: element['25'],
+                });
+                r++;
+            });
+            var project = {
+                 _token: _token,
+                client_id: $("#client_id").val(),
+                client_name:  $("#client_id option:selected").text(),
+                client_address: $("#client_address").html(),
+                zone_id: $("#zone_id").val(),
+                zone_name:  $("#zone_id option:selected").text(),
+                assessor_id: $("#assessor_id").val(),
+                assessor_name:  $("#assessor_id option:selected").text(),
+                assessor_email: 'Assessor E-mail',
+                assessor_telephone: 'Assessor telephone',
+                constants: {
+                    exchange_rate: exchange_rate.getNumber(),
+                    panel_potency: panel_potency.getNumber(),
+                    kg_co2: kg_co2.getNumber(),
+                    trees: trees.getNumber(),
+                    benefit: benefit.getNumber(),
+                    benefit_usd: benefit_usd.getNumber(),
+                    limit_kwp: limit_kwp.getNumber(),
+                    limit_usd_kwp: limit_usd_kwp.getNumber(),
+                },
+                invoices: {
+                    @for($i = 1; $i <= 12; $i++)
+                    consumption_{{$i}}: consumption_{{$i}}.getNumber(),
+                    value_{{$i}}: value_{{$i}}.getNumber(),
+                    @endfor
+                    annual_consumption: annual_consumption.getNumber(),
+                    average_consumption: average_consumption.getNumber(),
+                    kwh_cost: kwh_cost.getNumber(),
+                    hired_potency: hired_potency.getNumber(),
+                    actual_kg_co2: actual_kg_co2.getNumber()
+                },
+                proposals: JSON.stringify(proposalsItems),
+                loan: {
+                    ammount: null, //loan_ammount.getNumber(),
+                    rate: null, ///loan_rate.getNumber(),
+                    recovery_years: null, //loan_years.getNumber(),
+                    
+                },
+                recovery: {
+                    potency: potency.getNumber(),
+                    investment: investment.getNumber(),
+                    fiscal_bonus: fiscal_bonus.getNumber(),
+                    inflation_1: inflation_1.getNumber(),
+                    inflation_8: inflation_8.getNumber(),
+                    inflation_rest: inflation_rest.getNumber(),
+                    discount_rate: discount_rate.getNumber(),
+                    van: van.getNumber(),
+                    tir: tir.getNumber(),
+                    recovery_years: recovery_years.getNumber()
+                },
+                radiation: JSON.stringify(radiationItems),
+                cashflow: JSON.stringify(cashflowData)
+            };
+
+            proposalsItems.forEach(element => {
+                if(element.name == $("#proposal_name").val()) {
+                    errors.push("Ya existe una propuesta con el mismo nombre");
+                }
+            });
+
+            var old_txt = $("#save-btn").html();
+            $("#save-btn").html("<h4>GENERANDO EL<br>COMPROBANTE</h4>");
+            $("#save-btn").attr("disabled", true);
+            $.ajax({
+                type: "post",
+                url: "{{route('projects.store')}}",
+                data: project,
+                dataType: "json",
+                success: function (response) {
+                    if(response["exception"] != undefined) {
+                        $.notify(
+                            {
+                                // options
+                                icon: 'fas fa-exclamation-circle',
+                                message: response["exception"]
+                            },{
+                                // settings
+                                type: "danger",
+                                showProgressbar: false,
+                                mouse_over: 'pause',
+                                animate: {
+                                    enter: 'animated bounceIn',
+                                    exit: 'animated bounceOut'
+                                }
+                            }
+                        );
+                        $("#save-btn").html(old_txt);
+                        $("#save-btn").attr("disabled", false);
+                    } else {
+                        /* window.open(response["reportUrl"], "_blank");
+                        window.location.href = "{{route('projects.index')}}" */
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('error');
+                    $.notify(
+                        {
+                            // options
+                            icon: 'fas fa-exclamation-circle',
+                            message: "{{__('An error has occured')}}"
+                        },{
+                            // settings
+                            type: "warning",
+                            showProgressbar: false,
+                            mouse_over: 'pause',
+                            animate: {
+                                enter: 'animated bounceIn',
+                                exit: 'animated bounceOut'
+                            }
+                        }
+                    );
+                    $("#save-btn").html(old_txt);
+                    $("#save-btn").attr("disabled", false);
+                }
+            });
+        } else {
+            errors.forEach(error => {
+                $.notify(
+                    {
+                        // options
+                        icon: 'fas fa-exclamation-circle',
+                        message: error
+                    },{
+                        // settings
+                        type: "warning",
+                        showProgressbar: false,
+                        mouse_over: 'pause',
+                        animate: {
+                            enter: 'animated bounceIn',
+                            exit: 'animated bounceOut'
+                        }
+                    }
+                );
+            });
+        }
+    }
+
+    function isProjectComplete() {
+        var errors = [];
+        return errors;
+    }
+
     $(document).ready(function() {
         exchangeRateUpdated();
         resizeRadiationTable();
         resizeProposalsTable();
 
-        /* consumption_1.set(43128);
+        consumption_1.set(43128);
         value_1.set(43128);
         $("#consumption_1").blur();
         $("#value_1").blur();
@@ -40,7 +223,8 @@
         consumption_12.set(33408);
         value_12.set(110246);
         kwh_cost.set(2.8);
-        $("select[name='zone_id'").selectpicker('val', 1);
+        $("#client_id").selectpicker('val', 1);
+        $("#zone_id").selectpicker('val', 1);
         proposal_name = 'Techo bodega y planta';
         proposal_usd_w = 1.3;
         proposal_inverter_1_id  = 1;
@@ -53,14 +237,14 @@
         proposal_inverter_3_q = null;
         proposal_inverter_3_name = null;
         proposal_panels_q = 245;
-        proposal_usd_iva = roundTo(proposal_panels_q * panel_potency.getNumber() * proposal_usd_w,2);
+        proposal_usd_iva = roundTo(proposal_panels_q * panel_potency.getNumber() * proposal_usd_w, 0);
         proposal_kw = roundTo(proposal_panels_q * panel_potency.getNumber() / 1000, 2);
-        benefit_calculated = roundTo(proposal_kw * limit_usd_kwp.getNumber(), 2);
+        benefit_calculated = roundTo(proposal_kw * limit_usd_kwp.getNumber(), 0);
         proposal_benefit = benefit_calculated > benefit_usd.getNumber() ? benefit_usd.getNumber() : benefit_calculated;
-        proposal_porc_price = roundTo(proposal_benefit / proposal_usd_iva * 100 ,2);
+        proposal_porc_price = roundTo(proposal_benefit / proposal_usd_iva * 100 ,0);
         proposal_m2 = proposal_panels_q * 3;
         proposal_generation = proposal_kw * 1700;
-        proposal_solar_fraction = roundTo(proposal_generation / annual_consumption.getNumber() * 100, 2);
+        proposal_solar_fraction = roundTo(proposal_generation / annual_consumption.getNumber() * 100, 0);
         proposal_co2 = proposal_generation * kg_co2.getNumber();
         proposal_trees = roundTo(proposal_co2 * trees.getNumber(), 0);
         proposal_specific_gener = roundTo(proposal_generation / proposal_kw, 0);
@@ -76,30 +260,30 @@
             investmentUpdated();
         }
         proposal = {
-            'proposal_name' : proposal_name,
-            'proposal_usd_w' : proposal_usd_w,
-            'proposal_inverter_1_id' : proposal_inverter_1_id,
-            'proposal_inverter_1_q' : proposal_inverter_1_q,
-            'proposal_inverter_1_name' : proposal_inverter_1_name,
-            'proposal_inverter_2_id' : proposal_inverter_2_id,
-            'proposal_inverter_2_q' : proposal_inverter_2_q,
-            'proposal_inverter_2_name' : proposal_inverter_2_name,
-            'proposal_inverter_3_id' : proposal_inverter_3_id,
-            'proposal_inverter_3_q' : proposal_inverter_3_q,
-            'proposal_inverter_3_name' : proposal_inverter_3_name,
-            'proposal_panels_q' : proposal_panels_q,
-            'proposal_usd_iva' : proposal_usd_iva,
-            'proposal_kw' : proposal_kw,
-            'proposal_benefit' : proposal_benefit,
-            'proposal_porc_price' : proposal_porc_price,
-            'proposal_m2' : proposal_m2,
-            'proposal_generation' : proposal_generation,
-            'proposal_solar_fraction' : proposal_solar_fraction,
-            'proposal_co2' : proposal_co2,
-            'proposal_trees' : proposal_trees,
-            'proposal_specific_gener' : proposal_specific_gener,
-            'proposal_actions' : proposal_actions,
-            'proposal_main' : proposal_main
+            'name' : proposal_name,
+            'usd_w' : proposal_usd_w,
+            'inverter_1_id' : proposal_inverter_1_id,
+            'inverter_1_q' : proposal_inverter_1_q,
+            'inverter_1_name' : proposal_inverter_1_name,
+            'inverter_2_id' : proposal_inverter_2_id,
+            'inverter_2_q' : proposal_inverter_2_q,
+            'inverter_2_name' : proposal_inverter_2_name,
+            'inverter_3_id' : proposal_inverter_3_id,
+            'inverter_3_q' : proposal_inverter_3_q,
+            'inverter_3_name' : proposal_inverter_3_name,
+            'panels_q' : proposal_panels_q,
+            'usd_iva' : proposal_usd_iva,
+            'kw' : proposal_kw,
+            'benefit' : proposal_benefit,
+            'porc_price' : proposal_porc_price,
+            'm2' : proposal_m2,
+            'generation' : proposal_generation,
+            'solar_fraction' : proposal_solar_fraction,
+            'co2' : proposal_co2,
+            'trees' : proposal_trees,
+            'specific_gener' : proposal_specific_gener,
+            'actions' : proposal_actions,
+            'main' : proposal_main
         };
 
         proposalsItems.push(proposal);
@@ -136,10 +320,11 @@
         $("#consumption_12").blur();
         $("#value_12").blur();
         $("#kwh_cost").blur();
-        $("select[name='zone_id'").blur();
+        $("#client_id").blur();
+        $("#zone_id").blur();
         $("#inflation_1").blur();
         $("#inflation_8").blur();
         $("#inflation_rest").blur();
-        $("#discount_rate").blur(); */
+        $("#discount_rate").blur();
     });
 </script>

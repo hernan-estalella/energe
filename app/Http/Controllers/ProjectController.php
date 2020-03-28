@@ -3,6 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use App\ProjectConstants;
+use App\ProjectInvoices;
+use App\ProjectProposals;
+use App\ProjectLoan;
+use App\ProjectRecovery;
+use App\ProjectRadiations;
+use App\ProjectCashflow;
 use App\Client;
 use App\Assessor;
 use App\Constant;
@@ -71,7 +78,50 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $project = new Project($request->all());
+            $project->save();
+
+            $constants = new ProjectConstants($request->constants);
+            $project->constants()->save($constants);
+
+            $invoices = new ProjectInvoices($request->invoices);
+            $project->invoices()->save($invoices);
+
+            foreach (\json_decode($request->proposals) as $p) {
+                $proposal = new ProjectProposals((array) $p);
+                $project->proposals()->save($proposal);
+            }
+
+            $loan = new ProjectLoan($request->loan);
+            $project->loan()->save($loan);
+            
+            $recovery = new ProjectRecovery($request->recovery);
+            $project->recovery()->save($recovery);
+
+            foreach (\json_decode($request->radiation) as $r) {
+                $radiation = new ProjectRadiations((array) $r);
+                $project->radiations()->save($radiation);
+            }
+
+            foreach (\json_decode($request->cashflow) as $c) {
+                $cashflow = new ProjectCashflow((array) $c);
+                $project->cashflow()->save($cashflow);
+            }
+            session()->put('success', 'Nuevo cliente registrado');
+        } catch (\Exception $e) {
+            session()->put('warning',__('An error has occured'));
+            session()->put('exception', $e->getMessage());
+        } finally {            
+            //return redirect()->route($this->path.'.index');
+        }
+        
+
+        //$zone->radiation->fill($request->all())->save();
+        /* return \Response::json([
+            'project_id'=>0,
+            'reportUrl'=>route('reports.sale', ['sale' => $sale])
+        ]); */ 
     }
 
     /**

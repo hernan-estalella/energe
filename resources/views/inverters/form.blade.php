@@ -10,11 +10,11 @@
     </div>
     <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3">
         @include('commons.asterix-sm')<label>Min. paneles</label><br/>
-        <input type="text" name="min_panels" id="min_panels" class="form-control">
+        <input type="text" name="min_panels" id="min_panels" class="form-control right">
     </div>
     <div class="form-group col-xs-12 col-sm-12 col-md-3 col-lg-3">
         @include('commons.asterix-sm')<label>Máx. paneles</label><br/>
-        <input type="text" name="max_panels" id="max_panels" class="form-control">
+        <input type="text" name="max_panels" id="max_panels" class="form-control right">
     </div>
 </div>
 <hr>

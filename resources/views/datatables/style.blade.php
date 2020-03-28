@@ -22,4 +22,8 @@
     table.dataTable thead .sorting_desc_disabled{
         background-image:none;
     }
+    .dataTables_scrollHeadInner {
+        margin: 0 auto;
+        width: 100% !important;
+    }
 </style>
