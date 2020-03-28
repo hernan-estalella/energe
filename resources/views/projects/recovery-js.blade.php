@@ -271,15 +271,47 @@
         }
         cashflowTable.ajax.reload();
         cashflowTable.columns.adjust().draw();
+        calculateCashflow();
     }
 
     function discountRateUpdated() {
-        var added = 0;
-        var dr = discount_rate.getNumber() / 100;
-        for (let index = 1; index <= 25; index++) {
-            added += cashflowItems[9][index] / Math.pow((1 + dr), index);
-        }
+        van.set(calculateVan(discount_rate.getNumber() / 100));
+    }
 
-        van.set(cashflowItems[9][0] + added);
+    function calculateVan(rate) {   //rate as decimal, not percentage
+        var added = 0;
+        for (let index = 1; index <= 25; index++) {
+            added += cashflowItems[9][index] / Math.pow((1 + rate), index);
+        }
+        return cashflowItems[9][0] + added;
+    }
+
+    function calculateTir(){
+        var min_rate = 0;
+        var max_rate = 0.3;
+
+        var van_min = calculateVan(min_rate);
+        var van_max = calculateVan(max_rate);
+
+        if (van_min >= 0 && van_max < 0) {
+            var error = van_min - van_max;
+            var avg_van = 0;
+            var avg_rate = 0;
+            while (error >= 1e-10) {
+                avg_rate = (min_rate + max_rate) / 2;
+                avg_van = calculateVan(avg_rate);
+                if (avg_van <= 0) {
+                    max_rate = avg_rate;
+                } else if (avg_van > 0){
+                    min_rate = avg_rate;
+                }
+                van_min = calculateVan(min_rate);
+                van_max = calculateVan(max_rate);
+                error = van_min - van_max;
+            }
+            tir.set(avg_rate * 100);
+        } else {
+            tir.set(0);
+        }
     }
 </script>

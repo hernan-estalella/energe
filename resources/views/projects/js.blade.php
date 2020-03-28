@@ -188,6 +188,66 @@
 
     function isProjectComplete() {
         var errors = [];
+
+        if (exchange_rate.getNumber() == 0) {
+            errors.push("Ingrese el tipo de cambio ARS/USD (Constantes)");
+        }
+
+        if (panel_potency.getNumber() == 0) {
+            errors.push("Ingrese el valor de Potencia panel (Constantes)");
+        }
+
+        if (kg_co2.getNumber() == 0) {
+            errors.push("Ingrese el valor de Conversión kg CO<sub>2</sub> (Constantes)");
+        }
+
+        if (trees.getNumber() == 0) {
+            errors.push("Ingrese el valor de Conversión árboles (Constantes)");
+        }
+
+        if (benefit.getNumber() == 0) {
+            errors.push("Ingrese el valor de Límite beneficio (Constantes)");
+        }
+
+        if (limit_kwp.getNumber() == 0) {
+            errors.push("Ingrese el valor de Límite USD/kWp (Constantes)");
+        }
+
+        if ($("#client_id").val() == '') {
+            errors.push("Seleccione el cliente (Proyecto)");
+        }
+
+        if ($("#zone_id").val() == '') {
+            errors.push("Seleccione la zona (Proyecto)");
+        }
+
+        if ($("#assessor_id").val() == '') {
+            errors.push("Seleccione el asesor (Proyecto)");
+        }
+
+        @for($i = 1; $i <= 12; $i++)
+        if (consumption_{{$i}}.getNumber() == 0) {
+            errors.push("Faltan datos de consumos de factura (Facturas)");
+        } else if (values_{{$i}}.getNumber() == 0) {
+            errors.push("Faltan datos de valores de factura (Facturas)");
+        }
+        @endfor
+
+        if (kwh_cost.getNumber() == 0) {
+            errors.push("Ingrese el valor de Costo kWh (Facturas)");
+        }
+
+        if (hired_potency.getNumber() == 0) {
+            errors.push("Ingrese el valor de Pot. contratada (Facturas)");
+        }
+
+        if (exchange_rate.getNumber() == 0) {
+            errors.push("Ingrese el tipo de cambio ARS/USD (Facturas)");
+        }
+
+        if (proposalsItems.length == 0) {
+            errors.push("Ingrese al menos una propuesta (Propuestas)");
+        }
         return errors;
     }
 
@@ -195,7 +255,7 @@
         exchangeRateUpdated();
         resizeRadiationTable();
         resizeProposalsTable();
-
+        return;
         consumption_1.set(43128);
         value_1.set(43128);
         $("#consumption_1").blur();

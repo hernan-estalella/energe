@@ -134,6 +134,7 @@
     function calculateCashflow() {
         var energyBuyed = 0;
         var energySold = 0;
+        recovery_years.set(0);
         radiationItems.forEach(element => {
             energyBuyed += element.energy_buyed;
             energySold += element.energy_sold;
@@ -156,11 +157,16 @@
             } else {
                 cashflowItems[10][index] = cashflowItems[9][index];
             }
+
+            if (recovery_years.getNumber() == 0 && cashflowItems[10][index] >= 0) {
+                recovery_years.set(index - 1);
+            }
         }
         cashflowTable.ajax.reload();
         cashflowTable.columns.adjust().draw();
         updateCashflowChart();
         discountRateUpdated();
+        //calculateTir();
     }
 
     function updateCashflowChart() {

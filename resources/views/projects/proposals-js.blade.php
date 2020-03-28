@@ -236,7 +236,7 @@
     function setMain(proposal_name) {
         proposalsItems.forEach(element => {
             if(element.name == proposal_name) {
-                element.actions = element.proposal_actions.replace("btn-outline-success", "btn-success");
+                element.actions = element.actions.replace("btn-outline-success", "btn-success");
                 element.main = true;
                 potency.set(element.kw * 1000);
                 potencyUpdated();

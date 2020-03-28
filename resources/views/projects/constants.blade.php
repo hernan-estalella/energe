@@ -77,7 +77,7 @@
                         </div>
                     </div>
                     <div class="form-group col-2">
-                        <small>Límite USD/kWp</small>
+                        <small>Límite kWp</small>
                         <div class="row">
                             <div class="col-6">
                                 <div class="input-group input-group-sm mb-3">
