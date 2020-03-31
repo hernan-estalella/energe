@@ -20,6 +20,7 @@
                     <option value="{{$inverter->id}}">{{$inverter->name}}</option>
                     @endforeach
                 </select>
+                
             </div>
         </div>
         <div class="col-1">
@@ -30,7 +31,8 @@
         </div>
         <div class="col-2">
             <div class="form-group">
-                <label>Inversor (2)</label>
+                <label>Inversor (2)</label>&nbsp;<button type="button" class="btn btn-sm btn-outline-danger" onclick="clearInverter2();" data-toggle="tooltip"
+                data-placement="top" title="Limpiar selección"><i class="fas fa-eraser"></i></button>
                 <select id="proposal_inverter_2" class="selectpicker">
                     @foreach ($inverters as $inverter)
                     <option value="{{$inverter->id}}">{{$inverter->name}}</option>
@@ -46,7 +48,8 @@
         </div>
         <div class="col-2">
             <div class="form-group">
-                <label>Inversor (3)</label>
+                <label>Inversor (3)</label>&nbsp;<button type="button" class="btn btn-sm btn-outline-danger" onclick="clearInverter3();" data-toggle="tooltip"
+                data-placement="top" title="Limpiar selección"><i class="fas fa-eraser"></i></button>
                 <select id="proposal_inverter_3" class="selectpicker">
                     @foreach ($inverters as $inverter)
                     <option value="{{$inverter->id}}">{{$inverter->name}}</option>

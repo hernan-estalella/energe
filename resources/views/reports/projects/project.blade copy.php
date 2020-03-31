@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Propuesta #{{$project->id}} - {{$project->client_name}}</title>
+  <title>Propuesto final</title>
   <link rel="shortcut icon" type="image/png" href="{{asset('img/icon.png')}}" />
   @include('reports.templates.css')
 </head>
@@ -40,13 +40,13 @@
           <span class="gray-energe" style="font-size: 0.8rem">CONTACTO:</span>
         </td>
         <td colspan="63" style="height: 50%; vertical-align: bottom; line-height: 20px;">
-          <span class="gray-energe" style="font-size: 0.8rem">{{$project->client_name}}</span>
+          <span class="gray-energe" style="font-size: 0.8rem">{{$project->client->name}}</span>
           <br>
-          <span class="gray-energe" style="font-size: 0.8rem">{{$project->client_address}}</span>
+          <span class="gray-energe" style="font-size: 0.8rem">{{$project->client->address}}</span>
           <br>
-          <span class="gray-energe" style="font-size: 0.8rem">{{$project->assessor_name}}</span>
+          <span class="gray-energe" style="font-size: 0.8rem">{{$project->assessor->name}}</span>
           <br>
-          <span class="gray-energe" style="font-size: 0.8rem">{{$project->assessor_telephone}} - {{$project->assessor_email}}</span>
+          <span class="gray-energe" style="font-size: 0.8rem">{{$project->assessor->telephone}} - {{$project->assessor->email}}</span>
         </td>
       </tr>  
     </tbody>
@@ -248,7 +248,7 @@
       </tr>
     </tbody>
   </table>
-  @if (count($project->proposals) > 1)
+  {{-- @if (isset($project->project_proposal_2)) --}}
   <div class="page-break"></div>
   <div style="position: fixed; left: 0px; top: 0px; right: 0px; bottom: 0px; text-align: center;z-index: -999; background-color: white;"></div>
   <table>
@@ -267,21 +267,16 @@
           <span class="extra-bold" style="font-size: 2.3rem">SISTEMA FOTOVOLTAICO</span>
         </td>
       </tr>
-      @php $alt_counter = 2; @endphp
-      @foreach ($project->proposals as $proposal)
-      @if ($proposal->main)
-          @continue
-      @endif
       <tr>
         <td colspan="100" class="rightered">
-          ALTERNATIVA 0{{$alt_counter}}
+          ALTERNATIVA 02
         </td>
       </tr>
       <tr>
         <td colspan="30" style="line-height: 12px; height: 5%" class="top-border left-border bottom-border">
           <div style="display: inline-block; vertical-align: top;"><img src="{{public_path()}}/img/panel-set.jpg" alt="ENERGE" width="35%"></div>
           <div style="display: inline-block; vertical-align: bottom;">
-            <span style="font-size: 2rem"><b>{{number_format($proposal->panels_q, 0, ',', '.')}}</b></span>
+            <span style="font-size: 2rem"><b>{{number_format($project->project_proposal_2->panels_q, 0, ',', '.')}}</b></span>
             <br>
             <span>PANELES</span>
             <br>
@@ -291,7 +286,7 @@
         <td colspan="30" style="line-height: 12px; height: 5%" class="top-border bottom-border">
           <div style="display: inline-block; vertical-align: top;"><img src="{{public_path()}}/img/inverter.jpg" alt="ENERGE" width="18%"></div>
           <div style="display: inline-block; vertical-align: bottom; text-align: right !important;">
-            <span style="font-size: 2rem"><b>{{number_format($proposal->total_inverters, 0, ',', '.')}}</b></span>
+            <span style="font-size: 2rem"><b>{{number_format($project->project_proposal_2->total_inverters, 0, ',', '.')}}</b></span>
             <br>
             <span>INVERSORES</span>
             <br>
@@ -301,7 +296,7 @@
         <td colspan="40" style="line-height: 12px; height: 5%" class="top-border right-border bottom-border">
           <div style="display: inline-block; vertical-align: middle;"><img src="{{public_path()}}/img/arrow.jpg" alt="ENERGE" width="5%"></div>
           <div style="display: inline-block; vertical-align: middle;"><span>POTENCIA<br/>INSTALADA</span></div>
-          <div style="display: inline-block; vertical-align: middle;"><span style="font-size: 2rem"><b>{{number_format($proposal->kw, 2, ',', '.')}}</b></span><span> kWp</span></div>
+          <div style="display: inline-block; vertical-align: middle;"><span style="font-size: 2rem"><b>{{number_format($project->project_proposal_2->kw, 2, ',', '.')}}</b></span><span> kWp</span></div>
         </td>
       </tr>   
       <tr>
@@ -315,18 +310,18 @@
       </tr>
       <tr>
         <td colspan="55" class="rightered bordered" style="line-height: 15px; height: 12%; vertical-align: bottom">
-          <span class="extra-bold" style="font-size: 4rem">{{number_format($proposal->usd_iva,0,',','.')}}</span>&nbsp;<span style="text-align: right; vertical-align: top">USD+IVA</span>
+          <span class="extra-bold" style="font-size: 4rem">{{number_format($project->project_proposal_2->usd_iva,0,',','.')}}</span>&nbsp;<span style="text-align: right; vertical-align: top">USD+IVA</span>
           <br>
-          <b>${{number_format($proposal->usd_w,2,',','.')}}</b> USD/Wp</div>
+          <b>${{number_format($project->project_proposal_2->usd_w,2,',','.')}}</b> USD/Wp</div>
           <br><br>
           <div style="display: inline-block;">
-            <span style="font-size: 2.5rem">{{number_format($proposal->porc_price,0,',','.')}}%</span>
+            <span style="font-size: 2.5rem">{{number_format($project->project_proposal_2->porc_price,0,',','.')}}%</span>
           </div>
           <div style="display: inline-block; text-align: left !important">
             <span><b>Potencial<br>Beneficio Fiscal</b></span>
           </div>
           <div style="display: inline-block;">
-            <span class="extra-bold" style="font-size: 2.5rem">{{number_format($proposal->benefit,0,',','.')}}</span>
+            <span class="extra-bold" style="font-size: 2.5rem">{{number_format($project->project_proposal_2->benefit,0,',','.')}}</span>
           </div>
         </td>
         <td colspan="5"></td>
@@ -340,25 +335,139 @@
               </tr>
               <tr>
                 <td colspan="100" class="centered" style="line-height: 18px;">
-                  <span style="font-size: 2rem"><b>{{number_format($proposal->co2,0,',','.')}}</b></span> KG Año
+                  <span style="font-size: 2rem"><b>{{number_format($project->project_proposal_2->co2,0,',','.')}}</b></span> KG Año
                   <br>
                   <span style="font-size: 2rem">CO2</span>
                   <br>
                   <span>EQUIVALENTE A LO ABSORBIDO<br>EN 30 AÑOS POR</span>
                   <br>
                   <div style="display: inline-block; vertical-align: bottom;"><img src="{{public_path()}}/img/trees.jpg" alt="ENERGE" width="15%"></div>
-                  <div style="display: inline-block; vertical-align: bottom;"><span style="font-size: 2rem"><b>{{number_format($proposal->trees, 0, ',', '.')}}</b></span><span> ALGARROBOS</span></div>
+                  <div style="display: inline-block; vertical-align: bottom;"><span style="font-size: 2rem"><b>{{number_format($project->project_proposal_2->trees, 0, ',', '.')}}</b></span><span> ALGARROBOS</span></div>
                 </td>
               </tr>
             </tbody>
           </table>
         </td>
       </tr>
-      @php $alt_counter++; @endphp
-      @endforeach
+    {{-- @if (isset($project->project_proposal_3)) --}}
+    <tr>
+      <td colspan="100" class="rightered">
+        ALTERNATIVA 03
+      </td>
+    </tr>
+      <tr>
+        <td colspan="30" style="line-height: 12px; height: 5%" class="top-border left-border bottom-border">
+          <div style="display: inline-block; vertical-align: top;"><img src="{{public_path()}}/img/panel-set.jpg" alt="ENERGE" width="35%"></div>
+          <div style="display: inline-block; vertical-align: bottom;">
+            <span style="font-size: 2rem"><b>{{number_format($project->project_proposal_3->panels_q, 0, ',', '.')}}</b></span>
+            <br>
+            <span>PANELES</span>
+            <br>
+            <span><b>{{number_format($project->constants->panel_potency, 0, ',', '.')}} wP</b></span>
+          </div>
+        </td>
+        <td colspan="30" style="line-height: 12px; height: 5%" class="top-border bottom-border">
+          <div style="display: inline-block; vertical-align: top;"><img src="{{public_path()}}/img/inverter.jpg" alt="ENERGE" width="18%"></div>
+          <div style="display: inline-block; vertical-align: bottom; text-align: right !important;">
+            <span style="font-size: 2rem"><b>{{number_format($project->project_proposal_3->total_inverters, 0, ',', '.')}}</b></span>
+            <br>
+            <span>INVERSORES</span>
+            <br>
+            <span><b>27KW</b></span>
+          </div>
+        </td>
+        <td colspan="40" style="line-height: 12px; height: 5%" class="top-border right-border bottom-border">
+          <div style="display: inline-block; vertical-align: middle;"><img src="{{public_path()}}/img/arrow.jpg" alt="ENERGE" width="5%"></div>
+          <div style="display: inline-block; vertical-align: middle;"><span>POTENCIA<br/>INSTALADA</span></div>
+          <div style="display: inline-block; vertical-align: middle;"><span style="font-size: 2rem"><b>{{number_format($project->project_proposal_3->kw, 2, ',', '.')}}</b></span><span> kWp</span></div>
+        </td>
+      </tr>   
+      <tr>
+        <td colspan="55" class="rightered">
+          INVERSIÓN ESTIMADA
+        </td>
+        <td colspan="5"></td>
+        <td colspan="40" class="rightered">
+          APORTE AMBIENTAL
+        </td>
+      </tr>
+      <tr>
+        <td colspan="55" class="rightered bordered" style="line-height: 15px; height: 12%; vertical-align: bottom">
+          <span class="extra-bold" style="font-size: 4rem">{{number_format($project->project_proposal_3->usd_iva,0,',','.')}}</span>&nbsp;<span style="text-align: right; vertical-align: top">USD+IVA</span>
+          <br>
+          <b>${{number_format($project->project_proposal_3->usd_w,2,',','.')}}</b> USD/Wp</div>
+          <br><br>
+          <div style="display: inline-block;">
+            <span style="font-size: 2.5rem">{{number_format($project->project_proposal_3->porc_price,0,',','.')}}%</span>
+          </div>
+          <div style="display: inline-block; text-align: left !important">
+            <span><b>Potencial<br>Beneficio Fiscal</b></span>
+          </div>
+          <div style="display: inline-block;">
+            <span class="extra-bold" style="font-size: 2.5rem">{{number_format($project->project_proposal_3->benefit,0,',','.')}}</span>
+          </div>
+        </td>
+        <td colspan="5"></td>
+        <td colspan="40" class="bordered" style="height: 12%;">
+          <table>
+            <tbody>
+              <tr>
+                @for ($i = 1; $i <= 100; $i++)
+                <td></td>
+                @endfor
+              </tr>
+              <tr>
+                <td colspan="100" class="centered" style="line-height: 18px;">
+                  <span style="font-size: 2rem"><b>{{number_format($project->project_proposal_3->co2,0,',','.')}}</b></span> KG Año
+                  <br>
+                  <span style="font-size: 2rem">CO2</span>
+                  <br>
+                  <span>EQUIVALENTE A LO ABSORBIDO<br>EN 30 AÑOS POR</span>
+                  <br>
+                  <div style="display: inline-block; vertical-align: bottom;"><img src="{{public_path()}}/img/trees.jpg" alt="ENERGE" width="15%"></div>
+                  <div style="display: inline-block; vertical-align: bottom;"><span style="font-size: 2rem"><b>{{number_format($project->project_proposal_3->trees, 0, ',', '.')}}</b></span><span> ALGARROBOS</span></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="100"></td>
+      </tr>
+      <tr>
+        <td colspan="30" class="bottom-border">
+          <span style="font-size: 0.9rem">Dolar Referencia</span>
+        </td>
+        <td colspan="20" class="bottom-border rightered">
+          <span style="font-size: 0.9rem"><b>1 USD = ${{number_format($project->constants->exchange_rate, 2, ',', '.')}}</b></span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="30" class="bottom-border">
+          <span style="font-size: 0.9rem">FORMA PAGO</span>
+        </td>
+        <td colspan="20" class="bottom-border rightered">
+          <span style="font-size: 0.9rem"><b>A CONVENIR</b></span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="30" class="bottom-border">
+          <span style="font-size: 0.9rem">PLAZO EJECUCIÓN</span>
+        </td>
+        <td colspan="20" class="bottom-border rightered">
+          <span style="font-size: 0.9rem"><b>30 DÍAS</b></span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="50">
+          <span style="font-size: 0.7rem">Monto a cancelar en pesos argentinos según cotización tipo billete vendedor del Banco Nación Argentina a fecha de pago</span>
+        </td>
+      </tr>
+      {{-- @endif --}}
     </tbody>
-  </table>
-  @endif
+  </table>      
+  {{-- @endif --}}
   <div class="page-break"></div>
   <div style="position: fixed; left: 0px; top: 0px; right: 0px; bottom: 0px; text-align: center;z-index: -999; background-color: white;"></div>
   <table>

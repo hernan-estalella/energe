@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 Route::post('/constants/ajaxUpdate', 'ConstantController@ajaxUpdate')->name('constants.ajaxUpdate');
 Route::resource('projects', 'ProjectController')->except('show');
+Route::post('/projects/ajax', 'ProjectController@ajax')->name('projects.ajax');
 Route::resource('clients', 'ClientController')->except('show');
 Route::get('/clients/ajax', 'ClientController@ajax')->name('clients.ajax');
 Route::post('/clients/fast-store', 'ClientController@fastStore')->name('clients.fastStore');

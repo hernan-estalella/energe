@@ -80,12 +80,13 @@
             proposal_benefit = benefit_calculated > benefit_usd.getNumber() ? benefit_usd.getNumber() : benefit_calculated;
             proposal_porc_price = roundTo(proposal_benefit / proposal_usd_iva * 100, 0);
             proposal_m2 = proposal_panels_q * 3;
-            proposal_generation = proposal_kw * 1700;
+            proposal_generation = proposal_kw * 1700;            
             proposal_solar_fraction = roundTo(proposal_generation / annual_consumption.getNumber() * 100, 0);
             proposal_co2 = proposal_generation * kg_co2.getNumber();
             proposal_trees = roundTo(proposal_co2 * trees.getNumber(), 0);
             proposal_specific_gener = roundTo(proposal_generation / proposal_kw, 0);
             proposal_actions = "<button type='button' class='btn btn-sm btn-" + (proposalsItems.length == 0 ? '' : 'outline-') + "success' onclick='setMain(\"" + proposal_name + "\");'>Principal</button>";
+            proposal_actions += "&nbsp;<button type='button' class='btn btn-sm btn-" + (proposalsItems.length == 0 ? '' : 'outline-') + "danger' onclick='deleteProposal(\"" + proposal_name + "\");'><i class='fas fa-trash-alt'></i></button>";
             proposal_main = false;
             if (proposalsItems.length == 0) {
                 proposal_main = true;
@@ -124,6 +125,7 @@
             };
 
             proposalsItems.push(proposal);
+            clearProposalHeader();
             proposalsTable.ajax.reload();
             proposalsTable.columns.adjust().draw();
         } else {
@@ -149,24 +151,31 @@
         }
     }
 
-    function isProposalComplete() {
-        /* console.log("Name: " + $("#proposal_name").val() + " END");
-        console.log("usd_w.getNumber(): " + usd_w.getNumber() + " END");
-        console.log("$('#proposal_inverter_1').val(): " + $("#proposal_inverter_1").val() + " END");
-        console.log("q_inverter_1.getNumber(): " + q_inverter_1.getNumber() + " END");
-        console.log("$('#proposal_inverter_2').val(): " + $("#proposal_inverter_2").val() + " END");
-        console.log("q_inverter_2.getNumber(): " + q_inverter_2.getNumber() + " END");
-        console.log("$('#proposal_inverter_3').val(): " + $("#proposal_inverter_3").val() + " END");
-        console.log("q_inverter_3.getNumber(): " + q_inverter_3.getNumber() + " END");
-        console.log("q_panels.getNumber(): " + q_panels.getNumber() + " END");
-        console.log("panel_potency.getNumber(): " + panel_potency.getNumber() + " END");
-        console.log("limit_usd_kwp.getNumber(): " + limit_usd_kwp.getNumber() + " END");
-        console.log("benefit_usd.getNumber(): " + benefit_usd.getNumber() + " END");
-        console.log("annual_consumption.getNumber(): " + annual_consumption.getNumber() + " END");
-        console.log("kg_co2.getNumber(): " + kg_co2.getNumber() + " END");
-        console.log("trees.getNumber(): " + trees.getNumber() + " END");
-        return "Hay errores"; */
+    function clearProposalHeader() {
+        $("#proposal_name").val('');
+        usd_w.set(0);
+        clearInverter1();
+        clearInverter2();
+        clearInverter3();
+        q_panels.set(0);
+    }
 
+    function clearInverter1() {
+        $("#proposal_inverter_1").selectpicker('val', '');
+        q_inverter_1.set(0);
+    }
+
+    function clearInverter2() {
+        $("#proposal_inverter_2").selectpicker('val', '');
+        q_inverter_2.set(0);
+    }
+
+    function clearInverter3() {
+        $("#proposal_inverter_3").selectpicker('val', '');
+        q_inverter_3.set(0);
+    }
+
+    function isProposalComplete() {
         var errors = [];
 
         if(proposalsItems.length == 3) {
@@ -233,10 +242,25 @@
         return errors;
     }
 
+    function deleteProposal(proposal_name) {
+        proposalsItems.forEach(element => {
+            if(element.name == proposal_name) {
+                proposalsItems.splice( $.inArray(element, proposalsItems), 1 );
+            }
+        });
+        if (proposalsItems.length > 0) {
+            var element = proposalsItems[0];
+            setMain(element.name);
+        } else {            
+            proposalsTable.ajax.reload();
+            proposalsTable.columns.adjust().draw();
+        }
+    }
+
     function setMain(proposal_name) {
         proposalsItems.forEach(element => {
             if(element.name == proposal_name) {
-                element.actions = element.actions.replace("btn-outline-success", "btn-success");
+                element.actions = element.actions.replace("btn-outline-success", "btn-success").replace("btn-outline-danger", "btn-danger");
                 element.main = true;
                 potency.set(element.kw * 1000);
                 potencyUpdated();
@@ -245,7 +269,7 @@
                 investment.set(element.usd_iva);
                 investmentUpdated();
             } else {
-                element.actions = element.actions.replace("btn-success", "btn-outline-success");
+                element.actions = element.actions.replace("btn-success", "btn-outline-success").replace("btn-danger", "btn-outline-danger");
                 element.main = false;
             }
         });

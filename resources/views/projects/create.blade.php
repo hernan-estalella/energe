@@ -9,7 +9,7 @@
 @section('content')
     <div class="container-fluid">
         <h3>Crear nuevo proyecto</h3>
-        {{-- <a href="{{ route('members.index') }}" class="btn btn-secondary">{{__('Cancel and return')}}</a> --}}
+        <a href="{{ route('projects.index') }}" class="btn btn-secondary">Cancelar y volver</a>
         <hr>
         <div class="clearfix"></div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

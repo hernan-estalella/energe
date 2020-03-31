@@ -48,6 +48,14 @@
                 });
                 r++;
             });
+
+            compareChart.update();
+            cashflowChart.update();
+            var radiation_base64 = compareChart.toBase64Image();
+            var cashflow_base64 = cashflowChart.toBase64Image();
+            //console.log(radiation_base64);
+            //console.log(cashflow_base64);
+            //return;
             var project = {
                  _token: _token,
                 client_id: $("#client_id").val(),
@@ -100,7 +108,9 @@
                     recovery_years: recovery_years.getNumber()
                 },
                 radiation: JSON.stringify(radiationItems),
-                cashflow: JSON.stringify(cashflowData)
+                cashflow: JSON.stringify(cashflowData),
+                radiation_base64: radiation_base64,
+                cashflow_base64: cashflow_base64
             };
 
             proposalsItems.forEach(element => {
@@ -138,8 +148,8 @@
                         $("#save-btn").html(old_txt);
                         $("#save-btn").attr("disabled", false);
                     } else {
-                        /* window.open(response["reportUrl"], "_blank");
-                        window.location.href = "{{route('projects.index')}}" */
+                        window.open(response["reportUrl"], "_blank");
+                        window.location.href = "{{route('projects.index')}}"
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -228,7 +238,7 @@
         @for($i = 1; $i <= 12; $i++)
         if (consumption_{{$i}}.getNumber() == 0) {
             errors.push("Faltan datos de consumos de factura (Facturas)");
-        } else if (values_{{$i}}.getNumber() == 0) {
+        } else if (value_{{$i}}.getNumber() == 0) {
             errors.push("Faltan datos de valores de factura (Facturas)");
         }
         @endfor
@@ -255,7 +265,7 @@
         exchangeRateUpdated();
         resizeRadiationTable();
         resizeProposalsTable();
-        //return;
+        return;
         consumption_1.set(43128);
         value_1.set(43128);
         $("#consumption_1").blur();
@@ -283,8 +293,38 @@
         consumption_12.set(33408);
         value_12.set(110246);
         kwh_cost.set(2.8);
+        hired_potency.set(35);
         $("#client_id").selectpicker('val', 1);
         $("#zone_id").selectpicker('val', 1);
+        $("#assessor_id").selectpicker('val', 1);
+        
+        $("#consumption_1").blur();
+        $("#value_1").blur();
+        $("#consumption_2").blur();
+        $("#value_2").blur();
+        $("#consumption_3").blur();
+        $("#value_3").blur();
+        $("#consumption_4").blur();
+        $("#value_4").blur();
+        $("#consumption_5").blur();
+        $("#value_5").blur();
+        $("#consumption_6").blur();
+        $("#value_6").blur();
+        $("#consumption_7").blur();
+        $("#value_7").blur();
+        $("#consumption_8").blur();
+        $("#value_8").blur();
+        $("#consumption_9").blur();
+        $("#value_9").blur();
+        $("#consumption_10").blur();
+        $("#value_10").blur();
+        $("#consumption_11").blur();
+        $("#value_11").blur();
+        $("#consumption_12").blur();
+        $("#value_12").blur();
+        $("#kwh_cost").blur();
+        $("#client_id").blur();
+        $("#zone_id").blur();
         proposal_name = 'Techo bodega y planta';
         proposal_usd_w = 1.3;
         proposal_inverter_1_id  = 1;
@@ -309,6 +349,7 @@
         proposal_trees = roundTo(proposal_co2 * trees.getNumber(), 0);
         proposal_specific_gener = roundTo(proposal_generation / proposal_kw, 0);
         proposal_actions = "<button type='button' class='btn btn-sm btn-" + (proposalsItems.length == 0 ? '' : 'outline-') + "success' onclick='setMain(\"" + proposal_name + "\");'>Principal</button>";
+        proposal_actions += "&nbsp;<button type='button' class='btn btn-sm btn-" + (proposalsItems.length == 0 ? '' : 'outline-') + "danger' onclick='deleteProposal(\"" + proposal_name + "\");'><i class='fas fa-trash-alt'></i></button>";
         proposal_main = false;
         if (proposalsItems.length == 0) {
             proposal_main = true;

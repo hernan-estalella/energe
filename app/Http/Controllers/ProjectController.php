@@ -17,6 +17,7 @@ use App\Inverter;
 use App\Panel;
 use App\Zone;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ProjectController extends Controller
 {
@@ -45,7 +46,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        return view($this->path.'.index');
     }
 
     /**
@@ -108,20 +109,41 @@ class ProjectController extends Controller
                 $cashflow = new ProjectCashflow((array) $c);
                 $project->cashflow()->save($cashflow);
             }
-            session()->put('success', 'Nuevo cliente registrado');
+
+            $radiationImage = $request->radiation_base64;
+            $cashflowImage = $request->cashflow_base64;
+
+            $folderPath = "img/charts/";
+            $radiation_image_parts = explode(";base64,", $radiationImage);
+            $cashflow_image_parts = explode(";base64,", $cashflowImage);
+            $radiation_image_type_aux = explode($folderPath, $radiation_image_parts[0]);
+            $cashflow_image_type_aux = explode($folderPath, $cashflow_image_parts[0]);
+            $radiation_image_base64 = base64_decode($radiation_image_parts[1]);
+            $cashflow_image_base64 = base64_decode($cashflow_image_parts[1]);
+            $radiation_name = 'radiation_' . $project->id . '.png';
+            $cashflow_name = 'cashflow_' . $project->id . '.png';
+            $radiation_file = $folderPath . $radiation_name;
+            $cashflow_file = $folderPath . $cashflow_name;
+            $radiation_output = file_put_contents($radiation_file, $radiation_image_base64);
+            $cashflow_output = file_put_contents($cashflow_file, $cashflow_image_base64);
+            /* if ($radiation_output) {
+                Log::info('Radiation chart for project id: '. $project->id . ' saved successfully');
+            } else {
+                Log::error('Error trying to save radiation chart for project id: '. $project->id);
+            }
+            if ($cashflow_output) {
+                Log::info('Cashflow chart for project id: '. $project->id . ' saved successfully');
+            } else {
+                Log::error('Error trying to save cashflow chart for project id: '. $project->id);
+            } */
+            return \Response::json([
+                'project_id'=>$project->id,
+                'reportUrl'=>route('reports.project', ['project' => $project])
+            ]);
         } catch (\Exception $e) {
             session()->put('warning',__('An error has occured'));
             session()->put('exception', $e->getMessage());
-        } finally {            
-            //return redirect()->route($this->path.'.index');
         }
-        
-
-        //$zone->radiation->fill($request->all())->save();
-        /* return \Response::json([
-            'project_id'=>0,
-            'reportUrl'=>route('reports.sale', ['sale' => $sale])
-        ]); */ 
     }
 
     /**
@@ -167,6 +189,30 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         //
+    }
+
+    /**
+     * Process dataTable ajax response.
+     *
+     * @param \Yajra\Datatables\Datatables $datatables
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ajax(Request $request)
+    {
+        $start = Carbon::parse($request->since)->startOfDay();
+        $end = Carbon::parse($request->until)->endOfDay();
+
+        $builder = Project::select(['id','created_at','client_name','assessor_name'])
+                    ->whereBetween('created_at',array($start,$end))
+                    ->orderBy('created_at', 'desc');
+        return datatables()
+                ->eloquent($builder)
+                ->editColumn('created_at', function(Project $project) {
+                    return $project->created_at_format;
+                })
+                ->addColumn('actions', 'projects.actions')
+                ->rawColumns(['actions'])
+                ->make();
     }
 
     public function report(Project $project) {

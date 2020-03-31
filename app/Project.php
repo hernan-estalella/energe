@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Project extends Model
 {
@@ -10,7 +11,11 @@ class Project extends Model
         'client_id','client_name','client_address',
         'zone_id','zone_name',
         'assessor_id','assessor_name','assessor_email','assessor_telephone'
-    ];
+    ];    
+
+    public function getCreatedAtFormatAttribute() {
+        return Carbon::parse($this->created_at)->format('d/m/Y');
+    }
 
     public function client() {
         return $this->belongsTo('App\Client');
