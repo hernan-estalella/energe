@@ -168,4 +168,28 @@ class ProjectController extends Controller
     {
         //
     }
+
+    public function report(Project $project) {
+        $project_main_proposal = null;
+        $project_proposal_2 = null;
+        $project_proposal_3 = null;
+        foreach ($project->proposals as $proposal) {
+            $proposal->benefit_porc = $proposal->benefit * 100 / $proposal->usd_iva;
+            $proposal->total_inverters = $proposal->inverter_1_q + $proposal->inverter_2_q + $proposal->inverter_3_q;
+            if ($proposal->main) {
+                $project_main_proposal = $proposal;
+            } else if(!isset($project_proposal_2)) {
+                $project_proposal_2 = $proposal;
+            } else {
+                $project_proposal_3 = $proposal;
+            }
+        }
+
+        $project->project_main_proposal = $project_main_proposal;
+        $project->project_proposal_2 = $project_proposal_2;
+        $project->project_proposal_3 = $project_proposal_3;
+        
+        $pdf = \PDF::loadView('reports.projects.project',compact('project'));
+        return $pdf->stream();
+    }
 }

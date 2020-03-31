@@ -18,7 +18,7 @@ class CreateProjectProposalsTable extends Migration
             $table->bigInteger('project_id')->unsigned();
             $table->foreign('project_id')->references('id')->on('projects');
             $table->string('name');
-            $table->integer('usd_w');
+            $table->decimal('usd_w', 5, 2);
             for ($i=1; $i <= 3; $i++) { 
                 $table->bigInteger('inverter_'.$i.'_id')->unsigned()->nullable();
                 $table->foreign('inverter_'.$i.'_id')->references('id')->on('inverters');

@@ -41,7 +41,7 @@ class Project extends Model
     }
 
     public function recovery() {
-        return $this->hasMany('App\ProjectRecovery');
+        return $this->hasOne('App\ProjectRecovery');
     }
 
     public function radiations() {

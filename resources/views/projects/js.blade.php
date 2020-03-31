@@ -255,7 +255,7 @@
         exchangeRateUpdated();
         resizeRadiationTable();
         resizeProposalsTable();
-        return;
+        //return;
         consumption_1.set(43128);
         value_1.set(43128);
         $("#consumption_1").blur();
