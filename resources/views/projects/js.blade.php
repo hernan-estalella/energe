@@ -65,8 +65,8 @@
                 zone_name:  $("#zone_id option:selected").text(),
                 assessor_id: $("#assessor_id").val(),
                 assessor_name:  $("#assessor_id option:selected").text(),
-                assessor_email: 'Assessor E-mail',
-                assessor_telephone: 'Assessor telephone',
+                assessor_email: '',
+                assessor_telephone: '',
                 constants: {
                     exchange_rate: exchange_rate.getNumber(),
                     panel_potency: panel_potency.getNumber(),

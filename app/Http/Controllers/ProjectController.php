@@ -82,6 +82,9 @@ class ProjectController extends Controller
     {
         try {
             $project = new Project($request->all());
+            $assessor = Assessor::find($project->assessor_id);
+            $project->assessor_email = $assessor->email;
+            $project->assessor_telephone = $assessor->telephone;
             $project->save();
 
             $constants = new ProjectConstants($request->constants);

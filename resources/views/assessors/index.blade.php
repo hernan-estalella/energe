@@ -32,7 +32,7 @@
 				"columns": [
 					{data:"name"},
 					{data:"email", orderable: false},
-					{data:"telephone", searchable: false, orderable: false},
+					{data:"telephone", orderable: false},
 					{data:"actions", searchable: false, orderable: false},
 				]
 			});
