@@ -13,7 +13,7 @@
 
     function setAddress() {
         let index = $("#client_id").prop('selectedIndex');
-        $("#client_address").html(clientsData[index].address);
+        $("#client_address").html(clientsData[index - 1].address);
     }
 
     function newClient() {
