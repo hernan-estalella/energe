@@ -113,20 +113,17 @@
                 cashflow_base64: cashflow_base64
             };
 
-            proposalsItems.forEach(element => {
-                if(element.name == $("#proposal_name").val()) {
-                    errors.push("Ya existe una propuesta con el mismo nombre");
-                }
-            });
-
             var old_txt = $("#save-btn").html();
-            $("#save-btn").html("<h4>GENERANDO EL<br>COMPROBANTE</h4>");
+            $("#save-btn").html("<h4>GENERANDO EL<br>PROYECTO</h4>");
             $("#save-btn").attr("disabled", true);
             $.ajax({
                 type: "post",
                 url: "{{route('projects.store')}}",
                 data: project,
                 dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function (response) {
                     if(response["exception"] != undefined) {
                         $.notify(
