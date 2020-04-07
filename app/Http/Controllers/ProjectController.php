@@ -18,6 +18,7 @@ use App\Panel;
 use App\Zone;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class ProjectController extends Controller
 {
@@ -126,7 +127,7 @@ class ProjectController extends Controller
             $cashflow_file = $folderPath . $cashflow_name;
             $radiation_output = file_put_contents($radiation_file, $radiation_image_base64);
             $cashflow_output = file_put_contents($cashflow_file, $cashflow_image_base64);
-            /* if ($radiation_output) {
+            if ($radiation_output) {
                 Log::info('Radiation chart for project id: '. $project->id . ' saved successfully');
             } else {
                 Log::error('Error trying to save radiation chart for project id: '. $project->id);
@@ -135,7 +136,7 @@ class ProjectController extends Controller
                 Log::info('Cashflow chart for project id: '. $project->id . ' saved successfully');
             } else {
                 Log::error('Error trying to save cashflow chart for project id: '. $project->id);
-            } */
+            }
             return \Response::json([
                 'project_id'=>$project->id,
                 'reportUrl'=>route('reports.project', ['project' => $project])

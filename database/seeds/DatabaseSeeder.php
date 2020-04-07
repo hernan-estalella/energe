@@ -15,9 +15,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ConstantSeeder::class,
             InverterSeeder::class,
-            AssessorSeeder::class,
+            /* AssessorSeeder::class,
             ZoneSeeder::class,
-            ClientSeeder::class
+            ClientSeeder::class */
         ]);
     }
 }
