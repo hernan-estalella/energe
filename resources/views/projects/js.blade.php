@@ -150,7 +150,7 @@
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.log('error');
+                    console.log(errorThrown);
                     $.notify(
                         {
                             // options
